@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.AddressableAssets;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
@@ -163,8 +162,8 @@ namespace MDPro3.UI
                 Config.Set("DeckInUse", deckName);
                 if (SelectDeck.condition == SelectDeck.Condition.ForEdit)
                 {
+                    Program.I().editDeck.SwitchCondition(EditDeck.Condition.EditDeck);
                     Program.I().ShiftToServant(Program.I().editDeck);
-                    Program.I().editDeck.returnServant = Program.I().selectDeck;
                 }
                 else if (SelectDeck.condition == SelectDeck.Condition.ForDuel)
                 {

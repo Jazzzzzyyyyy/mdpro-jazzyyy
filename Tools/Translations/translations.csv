@@ -38,7 +38,7 @@ AI始终出剪刀,Always plays scissors,Siempre tijeras(IA),チョキ固定,AI�
 主机地址：,Host IP:  ,Servidor: ,ＩＰ：,호스트 주소：,主機地址：
 主机端口：,Port:  ,Puerto del servidor: ,ＰＯＲＴ：,호스트 포트：,主機端口：
 主机密码：,Password:  ,Contraseña: ,パスワード：,호스트 비밀번호：,主機密碼：
-保存预设,Save Preset,Guardar preestablecida,設定保存,프리셋 저장,保存預設
+保存预设,Save Preset,Guardar,設定保存,프리셋 저장,保存預設
 请输入预设名称,Please enter a preset name,Ingresa el nombre del servidor,名前を入力,프리셋 이름 입력,請輸入預設名稱
 创建主机,Create Host,Anfitrión,部屋を建てる,호스트 생성,創建主機
 加入游戏,Join Game,Unirse al juego,ゲーム開始,게임 참가,加入遊戲
@@ -46,7 +46,7 @@ AI始终出剪刀,Always plays scissors,Siempre tijeras(IA),チョキ固定,AI�
 本地主机,LAN,LAN,ＬＡＮ対戦,로컬 호스트,本地主機
 账号：,Account: ,Usuario: ,アカウント：,계정：,帳號：
 密码：,Password: ,Contraseña: ,パスワード：,비밀번호：,密碼：
-注册,Register,Registro,登録：,등록,註冊
+注册,Register,Registrarse,登録：,등록,註冊
 登录,Login,Iniciar sesión,ログイン,로그인,登入
 登录失败：,Login failed:,Error de inicio de sesión:,ログイン失敗,로그인 실패：,登入失敗：
 请检查网络连接,Please check your network connection,Por favor verifique su conexión de red,ネットワーク接続を確認してください,네트워크 연결을 확인하십시오,請檢查網絡連接
@@ -71,8 +71,8 @@ MyCard登录失败。,Mycard account Login failed,Error al iniciar sesión en My
 娱乐匹配,Entertainment Match,Match Casual,フリーマッチング,예능 매칭,娛樂匹配
 匹配失败,Matching Failed,Falló el emparejamiento,マッチング失敗,매칭 실패,匹配失敗
 搜索决斗者,Search Duelist,Buscar Duelistas,決闘者サーチ,듀얼리스트 검색,蒐索決鬥者
-创建房间,Create Room,Crear una habitación,ルームの作成,공간 만들기,創建房間
-检测到新版先行卡，请至 [游戏设置]-[扩展卡包]-[更新先行卡] 处进行更新。,A new version of SuperPre cards has been detected. Please go to [SETTING] - [Expansions] - [Update SuperPre cards] to update it.,"Si se detecta una nueva versión de la tarjeta pionera, por favor actualice en [AJUSTES] - [Usar expansiones] - [Actualizar expansiones (cartas pre-lanzadas)].",新しい先行カードが検出されました。[ゲーム設定]-[拡張パッケージ]-[先行カードの更新]で更新してください。,새 선행 카드가 발견되었습니다. [게임 설정] - [카드 확장팩] - [프리릴리즈 카드 업데이트]에서 업데이트하십시오.,檢測到新版先行卡，請至[遊戲設置]-[擴展卡包]-[更新先行卡]處進行更新。
+创建房间,Create Room,Crear una sala,ルームの作成,공간 만들기,創建房間
+检测到新版先行卡，请至 [游戏设置]-[扩展卡包]-[更新先行卡] 处进行更新。,A new version of SuperPre cards has been detected. Please go to [SETTING] - [Expansions] - [Update SuperPre cards] to update it.,Nuevas cartas pre-lanzadas detectadas. Ir a [Ajustes]-[Usar expansiones]-[Actualizar expansiones (cartas pre-lanzadas)].,新しい先行カードが検出されました。[ゲーム設定]-[拡張パッケージ]-[先行カードの更新]で更新してください。,새 선행 카드가 발견되었습니다. [게임 설정] - [카드 확장팩] - [프리릴리즈 카드 업데이트]에서 업데이트하십시오.,檢測到新版先行卡，請至[遊戲設置]-[擴展卡包]-[更新先行卡]處進行更新。
 用户名不能为空。,Player Name cannot be empty.,El nombre de usuario no puede estar vacío.,プレイヤー名は空にできません。,사용자 이름은 비워둘 수 없습니다.,用戶名不能為空。
 主机地址和端口不能为空。,Host IP and Port cannot be empty.,La dirección y el puerto del host no pueden estar vacíos.,ＩＰとＰＯＲＴは空にすることはできません。,호스트 주소와 포트는 비워둘 수 없습니다.,主機地址和端口不能為空。
 ,,,,,
@@ -104,7 +104,7 @@ MyCard登录失败。,Mycard account Login failed,Error al iniciar sesión en My
 您正在观看旧版的回放（上帝视角），不保证稳定性。,"You are watching outdated replay(God View), stability is not guaranteed.","Está viendo una repetición de la versión antigua (Vista de Dios), no se garantiza la estabilidad.",旧バージョンの（ゴッドモード）を再生中，安定性は保証できません。,구 버전의 리플레이를 시청하고 있습니다(하늘의 시점). 안정성이 보장되지 않습니다.,您正在觀看舊版的回放（上帝視角），不保證穩定性。
 回放播放结束。,End of replay.,Finalizó la reproducción de la repetición.,再生終了,리플레이 재생이 종료되었습니다.,回放播放結束。
 YGOPro旧版的回放崩溃了！您可以选择使用永不崩溃的新版回放。,This outdated YGOPro Replay file has crashed! A new type of replay file is suggested to avoid any crashes.,"¡La repetición de la versión antigua de YGOPro falló! Usa repeticiones de la nueva versión, que no se bloquean.",ＹＧＯＰＲＯ旧バージョンリプレイエラー発生！@nエラーをしない新バージョンを使用してください。,YGOPro 구 버전의 리플레이가 충돌했습니다! 안정적인 새로운 버전의 리플레이를 선택할 수 있습니다.,YGOPro舊版的回放崩潰了！您可以選擇使用永不崩潰的新版回放。
-保存回放,Save Replay,Guardar replay,リプレイ保存,리플레이 저장,保存回放
+保存回放,Save Replay,Guardar repetición,リプレイ保存,리플레이 저장,保存回放
 回放没有录制完整。,The replay was not fully recorded.,La repetición no se guardó completamente.,リプレイは未完成状態です,리플레이가 완전히 녹화되지 않았습니다.,回放沒有錄制完整。
 ,,,,,
 #MonsterCutin,,,,,
@@ -113,7 +113,7 @@ YGOPro旧版的回放崩溃了！您可以选择使用永不崩溃的新版回�
 ,,,,,
 #Mate,,,,,
 搜索同伴,Search Mates,Buscar Compañero,メイト検索,메이트 검색,搜索同伴
-长按宠物再松开后即可返回正常视角。,Long press and release the mate to return to normal viewing angle.,Presione la mascota durante mucho tiempo y luego suelte para volver a la perspectiva normal.,メイトを長押しして放すと通常の視野に戻ります。,애완동물을 길게 누르고 놓으면 정상 시각으로 돌아갈 수 있다.,長按寵物再鬆開後即可返回正常視角。
+长按宠物再松开后即可返回正常视角。,Long press and release the mate to return to normal viewing angle.,Mantenga presionada la mascota y suéltela para volver a la vista normal o presione la tecla "W"(Solo PC).,メイトを長押しして放すと通常の視野に戻ります。,애완동물을 길게 누르고 놓으면 정상 시각으로 돌아갈 수 있다.,長按寵物再鬆開後即可返回正常視角。
 ,,,,,
 #SelectDeck,,,,,
 选择卡组,Select Deck,Elegir Deck,デッキ選択,덱 선택,選擇牌組
@@ -133,9 +133,9 @@ MyCard卡组,MyCard Deck,Deck MyCard,MyCard デッキ,MyCard 덱,MyCard牌組
 en-US,English,English,English,English,English
 es-ES,Español,Español,Español,Español,Español
 ja-JP,日本語,日本語,日本語,日本語,日本語
-ko-KR,한국어,한국어,한국어,한국어,한국어
-zh-CN,简体中文,简体中文,简体中文,简体中文,简体中文
-zh-TW,繁體中文,繁體中文,繁體中文,繁體中文,繁體中文
+ko-KR,한국어,코리아노,한국어,한국어,한국어
+zh-CN,简体中文,中國人,简体中文,简体中文,简体中文
+zh-TW,繁體中文,中国人,繁體中文,繁體中文,繁體中文
 系统设置,General,Ajustes del sistema,システム,시스템 설정,系統設定
 决斗设置,Duel,Ajustes del duelo,デュエル,듀얼 설정,決鬥設定
 观战设置,Audience,Ajustes del expectador,観戦,관전 설정,觀戰設定
@@ -143,7 +143,7 @@ zh-TW,繁體中文,繁體中文,繁體中文,繁體中文,繁體中文
 关于游戏,About Game,Acerca del juego,ソフト情報,게임 정보,關於遊戲
 ,,,,,
 #Setting System,,,,,
-音乐音量,BGM,Volumen de música,ＢＧＭ,음악 볼륨,音樂音量
+音乐音量,BGM,Volumen de la música,ＢＧＭ,음악 볼륨,音樂音量
 音效音量,Sound Effects,Volumen de los efectos de sonido,効果音,효과음 볼륨,音效音量
 语音音量,Character Voice,Volumen de voz,ボイス,보이스 볼륨,語音音量
 显示模式,View Mode,Modo de visualización,表示モード,표시 모드,顯示模式
@@ -153,7 +153,7 @@ zh-TW,繁體中文,繁體中文,繁體中文,繁體中文,繁體中文
 窗口化,Window Mode,Ventana,スクリーン窓化,창 모드,視窗化
 窗口化（仅桌面端有效）,Window Mode (PC/Laptop Only),Ventana (sólo válido para PC/Laptop),スクリーン窓化（パソコンやノートに適用する）,창 모드 (데스크탑 전용),視窗化（僅桌面端有效）
 分辨率,Resolution,Resolución,解像度,해상도,解析度
-设置游戏的渲染分辨率,Sets the resolution of the game,Establecer la resolución de renderizado del juego,ゲーム画質やレンダリング解像度,게임의 렌더링 해상도 설정,設置遊戲的渲染分辨率
+设置游戏的渲染分辨率,Sets the resolution of the game,Establecer la resolución de pantalla del juego,ゲーム画質やレンダリング解像度,게임의 렌더링 해상도 설정,設置遊戲的渲染分辨率
 渲染倍率,Resolution Scaling,Aumento de renderizado,レンダリング倍率,렌더링 배율,渲染倍率
 画面质量,Graphics Quality,Calidad de imagen,画質レベル,화면 품질,畫面品質
 非常低,Very Low,Muy baja,非常に低い,매우 낮음,非常低
@@ -182,8 +182,8 @@ UI缩放,UI Scaling,Escalado de la UI,ＵＩズーム,UI크기 조정,UI縮放
 语言,Language,Idioma de la UI,言語,언어,語言
 设置游戏中的语言,Change the language of the in-game text,Configurar el idioma de la interfaz de usuario,ゲームや表示されるテキストの言語,게임 내 언어 설정,設置遊戲中的語言
 决斗中不能更改此选项。,This option is unable to change during a duel.,Esta opción no se puede cambiar durante un duelo.,デュエル中にこの設定を変更できません,듀얼 중에는 이 설정을 변경할 수 없습니다.,決斗中不能更改此選項。
-场地背景音乐,Mat BGM,Música de fondo del lugar,フィールドＢＧＭ,필드 배경음악,場地背景音樂
-场地背景音乐由哪方决定,Mat BGM decides by,quién decide la música de fondo del lugar,フィールドＢＧＭは誰が決めるのですか？,장소 배경음악은 어느 쪽이 정할까요,場地背景音樂由哪方決定
+场地背景音乐,Mat BGM,Música de fondo del escenario,フィールドＢＧＭ,필드 배경음악,場地背景音樂
+场地背景音乐由哪方决定,Mat BGM decides by,¿Quién decide la música de fondo del escenario?,フィールドＢＧＭは誰が決めるのですか？,장소 배경음악은 어느 쪽이 정할까요,場地背景音樂由哪方決定
 ,,,,,
 #Setting Duel,,,,,
 外观,Profile,Apariencia,プロフィール,외관,外觀

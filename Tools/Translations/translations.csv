@@ -38,7 +38,7 @@ AI始终出剪刀,Always plays scissors,Siempre tijeras(IA),チョキ固定,AI�
 主机地址：,Host IP:  ,Servidor: ,ＩＰ：,호스트 주소：,主機地址：
 主机端口：,Port:  ,Puerto del servidor: ,ＰＯＲＴ：,호스트 포트：,主機端口：
 主机密码：,Password:  ,Contraseña: ,パスワード：,호스트 비밀번호：,主機密碼：
-保存预设,Save Preset,Guardar preestablecida,設定保存,프리셋 저장,保存預設
+保存预设,Save Preset,Guardar,設定保存,프리셋 저장,保存預設
 请输入预设名称,Please enter a preset name,Ingresa el nombre del servidor,名前を入力,프리셋 이름 입력,請輸入預設名稱
 创建主机,Create Host,Anfitrión,部屋を建てる,호스트 생성,創建主機
 加入游戏,Join Game,Unirse al juego,ゲーム開始,게임 참가,加入遊戲
@@ -72,7 +72,7 @@ MyCard登录失败。,Mycard account Login failed,Error al iniciar sesión en My
 匹配失败,Matching Failed,Falló el emparejamiento,マッチング失敗,매칭 실패,匹配失敗
 搜索决斗者,Search Duelist,Buscar Duelistas,決闘者サーチ,듀얼리스트 검색,蒐索決鬥者
 创建房间,Create Room,Crear una sala,ルームの作成,공간 만들기,創建房間
-检测到新版先行卡，请至 [游戏设置]-[扩展卡包]-[更新先行卡] 处进行更新。,A new version of SuperPre cards has been detected. Please go to [SETTING] - [Expansions] - [Update SuperPre cards] to update it.,Nuevas cartas pre-lanzadas detectadas. Ir a [Ajustes]-[Usar expansiones]-[Actualizar expansiones (cartas pre-lanzadas)].,新しい先行カードが検出されました。[ゲーム設定]-[拡張パッケージ]-[先行カードの更新]で更新してください。,새 선행 카드가 발견되었습니다. [게임 설정] - [카드 확장팩] - [프리릴리즈 카드 업데이트]에서 업데이트하십시오.,檢測到新版先行卡，請至[遊戲設置]-[擴展卡包]-[更新先行卡]處進行更新。
+检测到新版先行卡，请至 [游戏设置]-[扩展卡包]-[更新先行卡] 处进行更新。,A new version of SuperPre cards has been detected. Please go to [SETTING] - [Expansions] - [Update SuperPre cards] to update it.,Nuevas cartas pre-lanzadas detectadas. Ir a [Ajustes]-[Usar expansiones]-[Actualizar expansiones].,新しい先行カードが検出されました。[ゲーム設定]-[拡張パッケージ]-[先行カードの更新]で更新してください。,새 선행 카드가 발견되었습니다. [게임 설정] - [카드 확장팩] - [프리릴리즈 카드 업데이트]에서 업데이트하십시오.,檢測到新版先行卡，請至[遊戲設置]-[擴展卡包]-[更新先行卡]處進行更新。
 用户名不能为空。,Player Name cannot be empty.,El nombre de usuario no puede estar vacío.,プレイヤー名は空にできません。,사용자 이름은 비워둘 수 없습니다.,用戶名不能為空。
 主机地址和端口不能为空。,Host IP and Port cannot be empty.,La dirección y el puerto del host no pueden estar vacíos.,ＩＰとＰＯＲＴは空にすることはできません。,호스트 주소와 포트는 비워둘 수 없습니다.,主機地址和端口不能為空。
 ,,,,,
@@ -104,7 +104,7 @@ MyCard登录失败。,Mycard account Login failed,Error al iniciar sesión en My
 您正在观看旧版的回放（上帝视角），不保证稳定性。,"You are watching outdated replay(God View), stability is not guaranteed.","Está viendo una repetición de la versión antigua (Vista de Dios), no se garantiza la estabilidad.",旧バージョンの（ゴッドモード）を再生中，安定性は保証できません。,구 버전의 리플레이를 시청하고 있습니다(하늘의 시점). 안정성이 보장되지 않습니다.,您正在觀看舊版的回放（上帝視角），不保證穩定性。
 回放播放结束。,End of replay.,Finalizó la reproducción de la repetición.,再生終了,리플레이 재생이 종료되었습니다.,回放播放結束。
 YGOPro旧版的回放崩溃了！您可以选择使用永不崩溃的新版回放。,This outdated YGOPro Replay file has crashed! A new type of replay file is suggested to avoid any crashes.,"¡La repetición de la versión antigua de YGOPro falló! Usa repeticiones de la nueva versión, que no se bloquean.",ＹＧＯＰＲＯ旧バージョンリプレイエラー発生！@nエラーをしない新バージョンを使用してください。,YGOPro 구 버전의 리플레이가 충돌했습니다! 안정적인 새로운 버전의 리플레이를 선택할 수 있습니다.,YGOPro舊版的回放崩潰了！您可以選擇使用永不崩潰的新版回放。
-保存回放,Save Replay,Guardar repetición,リプレイ保存,리플레이 저장,保存回放
+保存回放,Save Replay,Guardar Repetición,リプレイ保存,리플레이 저장,保存回放
 回放没有录制完整。,The replay was not fully recorded.,La repetición no se guardó completamente.,リプレイは未完成状態です,리플레이가 완전히 녹화되지 않았습니다.,回放沒有錄制完整。
 ,,,,,
 #MonsterCutin,,,,,
@@ -143,7 +143,7 @@ zh-TW,繁體中文,繁體中文,繁體中文,繁體中文,繁體中文
 关于游戏,About Game,Acerca del juego,ソフト情報,게임 정보,關於遊戲
 ,,,,,
 #Setting System,,,,,
-音乐音量,BGM,Volumen de la músic,ＢＧＭ,음악 볼륨,音樂音量
+音乐音量,BGM,Volumen de la música,ＢＧＭ,음악 볼륨,音樂音量
 音效音量,Sound Effects,Volumen de los efectos de sonido,効果音,효과음 볼륨,音效音量
 语音音量,Character Voice,Volumen de voz,ボイス,보이스 볼륨,語音音量
 显示模式,View Mode,Modo de visualización,表示モード,표시 모드,顯示模式
@@ -194,7 +194,7 @@ UI缩放,UI Scaling,Escalado de la UI,ＵＩズーム,UI크기 조정,UI縮放
 回放中的各种外观,Profile and Accessories in Replay,Perfil y accesorios en la repetición,リプレイのプレイヤー名、テーマやアクセサリー等々の編集,리플레이에서의 다양한 외관,回放中的各種外觀
 角色,Character,Personaje,キャラクター,캐릭터,角色
 决斗中语音功能的角色,Character in Duel,Personaje en el duelo,デュエルのキャラクターボイス,듀얼에서 보이스 기능을 가진 캐릭터,決斗中語音功能的角色
-观战中语音功能的角色,Character in Spectation,Perasonaje en modo expectador,観戦のキャラクターボイス,관전에서 보이스 기능을 가진 캐릭터,觀戰中語音功能的角色
+观战中语音功能的角色,Character in Spectation,Personaje en modo expectador,観戦のキャラクターボイス,관전에서 보이스 기능을 가진 캐릭터,觀戰中語音功能的角色
 回放中语音功能的角色,Character in Replay,Personaje en la repetición,リプレイのキャラクターボイス,리플레이에서 보이스 기능을 가진 캐릭터,回放中語音功能的角色
 语音功能,Character Voice Function,Función de voz,ボイス,보이스 기능,語音功能
 决斗中的动漫角色语音功能,Character Voice Function in Duel,Función de voz de personajes en el duelo,デュエル中のキャラクターボイス機能,듀얼에서의 애니메이션 캐릭터 보이스 기능,決斗中的動漫角色語音功能
@@ -286,13 +286,13 @@ UI缩放,UI Scaling,Escalado de la UI,ＵＩズーム,UI크기 조정,UI縮放
 确定清空,Confirm Clear,Confirmar eliminación,削除の確認をしてください,비우기 확인,確定清空
 是否确认删除所有导入的卡图？,Are you sure to delete all imported card arts?,¿Confirmar la eliminación de todas las imágenes de cartas importadas?,導入した画像を全て削除しますか？,가져온 모든 카드 이미지를 삭제하시겠습니까?,是否確認删除所有導入的卡圖？
 决斗中不能进行此操作。,This operation cannot be performed in duel.,No se puede realizar esta operación durante un duelo.,デュエル中にこの操作は実行できません。,듀얼 중에는 이 작업을 수행할 수 없습니다.,決鬥中不能進行此操作。
-导入卡组「[?]」成功。,Successfully imported deck [?].,"Importación de deck ""[?]"" realizada con éxito.",「[?]」デッキは導入は成功しました。,덱 「[?]」 가져오기 성공.,導入牌組「[?]」成功。
-导入回放「[?]」成功。,Successfully imported replay [?].,"Importación de reproducción ""[?]"" realizada con éxito.",「[?]」リプレイは導入は成功しました。,리플레이 「[?]」 가져오기 성공.,導入回放「[?]」成功。
-导入扩展卡文件「[?]」成功。,Successfully imported the expansion file [?].,"Importación de archivo de cartas pre-lanzadas ""[?]"" realizada con éxito.",「[?]」拡張ファイルは導入は成功しました。,확장 카드 파일 「[?]」 가져오기 성공.,導入擴展卡檔案「[?]」成功。
-导入卡片数据库「[?]」成功。,Successfully imported database file [?].,"Importación de base de datos de cartas ""[?]"" realizada con éxito.",「[?]」データベースは導入は成功しました。,카드 데이터베이스 「[?]」 가져오기 성공.,導入卡片資料庫「[?]」成功。
-导入字段文件「[?]」成功。,Successfully imported string file [?].,"Importación de archivo de Strings ""[?]"" realizada con éxito.",「[?]」テキストファイルは導入は成功しました。,필드 파일 「[?]」 가져오기 성공.,導入字段檔案「[?]」成功。
-导入自定义卡图「[?]」成功。,Successfully imported custom card art [?].,"Importación de imagen de carta personalizada ""[?]"" realizada con éxito.",「[?]」非公式画像は導入は成功しました。,사용자 지정 카드 이미지 「[?]」 가져오기 성공.,導入自定義卡圖「[?]」成功。
-导入背景图成功。,Successfully imported background image.,La imagen de fondo se importó correctamente.,背景絵の導入が成功しました。,배경 그림을 성공적으로 가져왔습니다.,導入背景圖成功。
+导入卡组「[?]」成功。,Successfully imported deck [?].,"El deck "[?]" ha sido importado con éxito.",「[?]」デッキは導入は成功しました。,덱 「[?]」 가져오기 성공.,導入牌組「[?]」成功。
+导入回放「[?]」成功。,Successfully imported replay [?].,"La reproducción "[?]" ha sido importada con éxito.",「[?]」リプレイは導入は成功しました。,리플레이 「[?]」 가져오기 성공.,導入回放「[?]」成功。
+导入扩展卡文件「[?]」成功。,Successfully imported the expansion file [?].,"El archivo de cartas pre-lanzadas "[?]" ha sido importado con éxito.",「[?]」拡張ファイルは導入は成功しました。,확장 카드 파일 「[?]」 가져오기 성공.,導入擴展卡檔案「[?]」成功。
+导入卡片数据库「[?]」成功。,Successfully imported database file [?].,"La base de datos de cartas "[?]" ha sido importada con éxito.",「[?]」データベースは導入は成功しました。,카드 데이터베이스 「[?]」 가져오기 성공.,導入卡片資料庫「[?]」成功。
+导入字段文件「[?]」成功。,Successfully imported string file [?].,"El archivo strings "[?]" ha sido importado con éxito",「[?]」テキストファイルは導入は成功しました。,필드 파일 「[?]」 가져오기 성공.,導入字段檔案「[?]」成功。
+导入自定义卡图「[?]」成功。,Successfully imported custom card art [?].,"El arte personalizado de la carta "[?]" ha sido importado con éxito.",「[?]」非公式画像は導入は成功しました。,사용자 지정 카드 이미지 「[?]」 가져오기 성공.,導入自定義卡圖「[?]」成功。
+导入背景图成功。,Successfully imported background image.,Imagen de fondo importada con éxito.,背景絵の導入が成功しました。,배경 그림을 성공적으로 가져왔습니다.,導入背景圖成功。
 ,,,,,
 #Setting Expansions,,,,,
 扩展卡包,Expansions,Usar expansiones,拡張パック,카드 확장팩,擴展卡包
@@ -358,7 +358,7 @@ UI缩放,UI Scaling,Escalado de la UI,ＵＩズーム,UI크기 조정,UI縮放
 上传,Upload,Subir,アップロード,업로드,上傳
 点赞,Like,Me gusta,いいね,좋아요,點贊
 保存,Save,Guardar,保存,저장,保存
-不保存,Unsave,No guardar,保存しない,저장 안함,不保存
+不保存,Unsave,No Guardar,保存しない,저장 안함,不保存
 注意,Attention,Atención,注意,주의,注意
 保存失败,Save Failed,Error al guardar,保存失敗,저장 실패,保存失敗
 卡组内卡片张数超过限制。@n如需无视限制，请将禁限卡表设置为无（N/A）。,There are Cards in your deck that exceed the limit。@nPlease set Forbidden & Limited Lists to NA if you want.,"El número de cartas en el Deck supera el límite. @nSi desea ignorar el límite, establezca la lista de cartas prohibidas y limitadas como N/A.",デッキの禁止・制限枚数に反しています。@n制限なししたい場合はリミットレギュレーションを（N/A）を選択してください。,"덱 내 카드 장수 제한을 초과했습니다.@n제한을 무시하려면, 금지 제한을 없음(N/A)으로 설정하세요.",牌組內卡片張數超過限制。@n如需無視限制，請將禁限卡表設定為無（N/A）。
@@ -385,16 +385,16 @@ UI缩放,UI Scaling,Escalado de la UI,ＵＩズーム,UI크기 조정,UI縮放
 创建卡组失败！请检查文件夹权限。,Failed to create deck! Please check folder permissions.,"Sin permiso de escritura, no se puede guardar.",新規デッキ追加失敗しました、ファイル権限をチェックしてください。,덱 생성에 실패했습니다! 폴더 권한을 확인해 주세요.,創建牌組失敗！請檢查文件夾權限。
 ,,,,,
 #EditDeck Search Filter,,,,,
-筛选菜单,Filter Menu,Menú de filtros,フィルターメニュー,필터 메뉴,篩選菜單
-卡片种类,Card Type,Tipo de carta,カード種類,카드 종류,卡片種類
+筛选菜单,Filter Menu,Menú de Filtros,フィルターメニュー,필터 메뉴,篩選菜單
+卡片种类,Card Type,Tipo de Carta,カード種類,카드 종류,卡片種類
 属性,Attribute,Atributo,属性,속성,屬性
 魔法·陷阱的种类,Types of Spell and Traps,Tipo de MÁGICA & TRAMPA,魔法・罠の種類,마법·함정의 종류,魔法·陷阱的種類
 种族,Type,Raza,種族,종족,種族
-能力·其他,Attribute/Other,Sub-Tipo,能力・その他,능력·기타,能力·其他
-效果以外,Non-Effect,Excluir efectos,効果以外,효과 이외,效果以外
+能力·其他,Attribute/Other,Habilidad/Otro,能力・その他,능력·기타,能力·其他
+效果以外,Non-Effect,Normal,効果以外,효과 이외,效果以外
 限制,Limited,Límite,制限,제한,限制
 无限制,Unlimited,Sin Límite,無制限,무제한,無限制
-卡池,Card Pool,Grupo de cartas,カードプール,카드 풀,卡池
+卡池,Card Pool,Grupo de Cartas,カードプール,카드 풀,卡池
 OCG独有,OCG Only,Exclusivo OCG,ＯＣＧのみ,OCG선행,OCG獨有
 TCG独有,TCG Only,Exclusivo TCG,ＴＣＧのみ,TCG선행,TCG獨有
 效果,Effect,Efecto,効果,효과,效果
@@ -402,7 +402,7 @@ TCG独有,TCG Only,Exclusivo TCG,ＴＣＧのみ,TCG선행,TCG獨有
 UR,UR,UR,ＵＲ,UR,UR
 SR,SR,SR,ＳＲ,SR,SR
 其它,Other,Otros,その他,기타,其它
-召唤卡片切入,Summon Cut-in,Inserción de invocación,召喚カットイン,소환 카드컷인,召喚卡片切入
+召唤卡片切入,Summon Cut-in,Animación al Invocar,召喚カットイン,소환 카드컷인,召喚卡片切入
 数值,Value,Valor,数值,랭크,數値
 星数,Level/Rank/Link,Lvl/Rnk/Lnk,レベル・ランク・リンク,레벨,星數
 攻击力,Attack,Ataque,攻撃力,공격력,攻擊力
@@ -410,7 +410,7 @@ SR,SR,SR,ＳＲ,SR,SR
 刻度,Pendulumn Scale,Escala,スケール,펜듈럼 스케일,刻度
 年份,Year,Año,年,링크,年份
 连接箭头,Link Arrow,Flecha de enlace,リンクマーカー,링크 마커,連接箭頭
-卡包,Pack,PAQUETE,パック,카드 팩,卡包
+卡包,Pack,PAQUETES,パック,카드 팩,卡包
 所有卡包,All Packs,Todos los paquetes,全てのパック,모든 카드 팩,所有卡包
 ,,,,,
 #EditDeck Search Order,,,,,
@@ -423,23 +423,23 @@ On,On,Encendido,ＯＮ,On,On
 Off,Off,Apagado,ＯＦＦ,Off,Off
 开,ON,Activado,オン,켜기,開
 关,OFF,Desactivado,オフ,끄기,關
-有,ON,Tiene,あり,있음,有
-无,OFF,Ninguno,ない,없음,無
+有,ON,Con Animación,あり,있음,有
+无,OFF,Sin Animación,ない,없음,無
 是,Yes,Sí,はい,예,是
 否,No,No,いいえ,아니요,否
 确认,Confirm,Confirmar,確認,확인,确認
 取消,Cancel,Cancelar,キャンセル,취소,取消
 选择,Select,Elegir,選択,선택,選擇
 覆盖,Overwrite,Sobrescribir,セット,덮어쓰기,覆蓋
-放弃,Cancel,Abandonar,放棄,포기,放棄
+放弃,Cancel,Cancelar,放棄,포기,放棄
 结束,End,Finalizar,終了,종료,結束
 ,,,,,
 #Duel,,,,,
 未知卡片,Unknown Card,Carta desconocida,不明カード,알 수 없는 카드,未知卡片
 未知卡表,Unknown ban-list,Banlist desconocida,Ｎ／Ａ,알 수 없는 카드 목록,未知卡表
-【灵摆效果】,【Pendulumn Effect】,【Efecto de péndulo】,【ペンデュラム効果】,【펜듈럼효과】,【靈擺效果】
-【怪兽效果】,【Monster Effect】,【Efecto de monstruo】,【モンスター効果】,【몬스터 효과】,【怪獸效果】
-【怪兽描述】,【Monster Description】,【Descripción del monstruo】,【モンスターテキスト】,【몬스터 설명】,【怪獸描述】
+【灵摆效果】,【Pendulumn Effect】,【Efecto de Péndulo】,【ペンデュラム効果】,【펜듈럼효과】,【靈擺效果】
+【怪兽效果】,【Monster Effect】,【Efecto de Monstruo】,【モンスター効果】,【몬스터 효과】,【怪獸效果】
+【怪兽描述】,【Monster Description】,【Descripción del Monstruo】,【モンスターテキスト】,【몬스터 설명】,【怪獸描述】
 [?]族,[?],[?],[?],[?],[?]族
 召唤,Summon,Invocar,召喚,일반 소환,召喚
 特殊召唤,Special Summon,Invocación Especial,特殊召喚,특수 소환,特殊召喚
@@ -447,14 +447,14 @@ Off,Off,Apagado,ＯＦＦ,Off,Off
 灵摆召唤,Pendulumn Summon,Invocación por Péndulo,ペンデュラム召喚,펜듈럼소환,靈擺召喚
 灵摆发动,P Scale,Poner en Zona de Péndulo,ペンデュラム効果発動,펜듈럼발동,靈擺發動
 发动效果,Active Effect,Activar Efecto,効果発動,효과 발동,發動效果
-变为攻击表示,Change to Attack Position,Cambiar a posición de ataque,攻撃表示になる,공격 표시로 변경,變為攻擊表示
-变为守备表示,Change to Defend Position,Cambiar a posición de defensa,守備表示になる,수비표시로 변경,變為守備表示
+变为攻击表示,Change to Attack Position,Cambiar a Posición de Ataque,攻撃表示になる,공격 표시로 변경,變為攻擊表示
+变为守备表示,Change to Defend Position,Cambiar a Posición de Defensa,守備表示になる,수비표시로 변경,變為守備表示
 「[?]」被发动时,「[?]」 was activated,"Se Activó ""[?]""",「[?]」が発動された時,「[?]」이(가) 발동했을 때,「[?]」被發動時
 「[?]」特殊召唤宣言时,「[?]」was special summoned,"""[?]"" fue Invocado de Modo Especial",「[?]」特殊召喚宣言時,「[?]」특수 소환 선언했을 때,「[?]」特殊召喚宣言時
-「[?]」通常召唤宣言时,「[?]」was normal summoned,"""[?]"" fue Invocado de Modo de Modo Normal",「[?]」通常召喚宣言時,「[?]」일반 소환 선언했을 때,「[?]」通常召喚宣言時
+「[?]」通常召唤宣言时,「[?]」was normal summoned,"""[?]"" fue Invocado de Modo Normal",「[?]」通常召喚宣言時,「[?]」일반 소환 선언했을 때,「[?]」通常召喚宣言時
 「[?]」反转召唤宣言时,「[?]」was flip summoned,"""[?]"" fue Invocado por Volteo",「[?]」反転召喚宣言時,「[?]」역소환 선언했을 때,「[?]」反轉召喚宣言時
 「[?]」攻击时,「[?]」is attacking,"""[?]"" está atacando",「[?]」攻撃時,「[?]」공격했을 때,「[?]」攻擊時
-攻击被无效时,Attack is negated,El ataque está negado,攻撃が無効時,공격이 무효화되었을 때,攻擊被無效時
+攻击被无效时,Attack is negated,El ataque ha sido negado,攻撃が無効時,공격이 무효화되었을 때,攻擊被無效時
 游戏胜利，原因：[?],"Victory, Reason: [?]","¡Haz ganado el duelo!, motivo: [?]",ゲーム勝利：[?],승리：[?],遊戲勝利，原因：[?]
 游戏败北，原因：[?],"Defeated, Reason: [?]","¡Haz perdido el duelo!, motivo: [?]",ゲーム敗北：[?],패배：[?],遊戲敗北，原因：[?]
 我方抽卡时,You draw the card(s),Robas la(s) carta(s),自分はカードドローした時,자신이카드 뽑을 때,我方抽牌時
@@ -481,7 +481,7 @@ Off,Off,Apagado,ＯＦＦ,Off,Off
 宣言种族,Declare Type,Declarar raza,種族宣言,선언한종족,宣言種族
 宣言属性,Declare Attribute,Declarar atributo,属性宣言,선언한속성,宣言屬性
 宣言数字,Declare Number,Declarar número,数値宣言,선언한숫자,宣言數字
-请选择前往的阶段,Select Phase to Change to,"Por favor, elige la fase a la que deseas ir",移行するフェイズを選択してください,이동할 단계를 선택하세요,請選擇前往的階段
+请选择前往的阶段,Select Phase to Change to,"Por favor, elige la fase a la que deseas ir:",移行するフェイズを選択してください,이동할 단계를 선택하세요,請選擇前往的階段
 请为卡片排序。,Please sort the card(s).,"Por favor, ordena las cartas.",カードを整列してください。,카드를 정렬하세요.,請為卡片排序。
 请取除指示物,Please remove the conter(s),"Por favor, retire el contador.",カウンターを取り除いてください,카운터를제거하세요.,請取除指示物
 通常召唤登场,Normal summoned,Invocación Normal,正規通常召喚,통상 소환됨,通常召喚登場
@@ -509,8 +509,8 @@ Off,Off,Apagado,ＯＦＦ,Off,Off
 请耐心等待双方玩家更换副卡组。,Please wait for both players to change their side deck.,"Por favor, espera pacientemente a que ambos jugadores cambien sus Side Decks.",サイドデッキの変更を待ってください。,양측 플레이어가사이드 덱을 교체하는 동안 기다려주세요.,請耐心等待雙方玩家更換副牌組。
 确认卡片：[?],Confirm Card: [?],Carta confirmada: [?],カード確認：[?],카드 확인：[?],确認卡片：[?]
 确认卡片：[?]张。,Confirm Cards: [?],Cartas confirmadas: [?] cartas.,カード確認：[?] 枚。,카드 확인：[?]장.,確認卡片：[?]張。
-现在不能查看此处的卡片。,Can not check the cards here now.,No se puede ver la tarjeta aquí ahora.,このカードは現在表示できません。,지금 이 카드에는 액세스할 수 없습니다.,現在不能查看此處的卡片。
-更换副卡组成功，请等待对手更换副卡组。,The adjustment of the side deck has been successful. Please wait for the opponent to change the side deck.,"El cambio del Grupo de tarjetas secundarias fue exitoso, por favor espere a que su oponente cambie el Grupo de tarjetas secundarias.",サイドデッキの交換に成功しました、相手のサイドデッキの交換をお待ちください。,보조 카드 그룹 교체에 성공했습니다. 상대방이 보조 카드 그룹을 교체할 때까지 기다리십시오.,更換副卡組成功，請等待對手更換副卡組。
+现在不能查看此处的卡片。,Can not check the cards here now.,No se pueden ver las cartas en este momento.,このカードは現在表示できません。,지금 이 카드에는 액세스할 수 없습니다.,現在不能查看此處的卡片。
+更换副卡组成功，请等待对手更换副卡组。,The adjustment of the side deck has been successful. Please wait for the opponent to change the side deck.,"Intercambio con el Side Deck realizado con éxito, espere a que su adversario termine.",サイドデッキの交換に成功しました、相手のサイドデッキの交換をお待ちください。,보조 카드 그룹 교체에 성공했습니다. 상대방이 보조 카드 그룹을 교체할 때까지 기다리십시오.,更換副卡組成功，請等待對手更換副卡組。
 ,,,,,
 #Duel Log,,,,,
 第[?]回合,Turn [?],Turno [?],ターン [?],[?]턴,第[?]回合
@@ -535,7 +535,7 @@ Off,Off,Apagado,ＯＦＦ,Off,Off
 破坏,Destroy,Destruir,破壊,파괴,破壞
 盖放,Set,Colocar,セット,세트,蓋放
 打开盖卡,Flip,Voltear,リバース,세트 카드 오픈,打開蓋卡
-放置,Set,Colocar,置く,배치,放置
+放置,Set,Activar M/T,置く,배치,放置
 仪式召唤,Ritual Summon,Invocar por Ritual,儀式召喚,의식 소환,儀式召喚
 融合召唤,Fusion Summon,Invocar por Fusión,融合召喚,융합 소환,融合召喚
 同调召唤,Synchro Summon,Invocar por Sincronía,シンクロ召喚,싱크로 소환,同調召喚
@@ -558,9 +558,9 @@ Off,Off,Apagado,ＯＦＦ,Off,Off
 ,,,,,
 #Appearance,,,,,
 决斗外观,Duel Appearance,Aspecto del duelo,デュエルテーマ,결투 외관,決斗外觀
-观战外观,Audience Appearance,Aspecto del expectado,観戦テーマ,관전 외관,觀戰外觀
+观战外观,Audience Appearance,Aspecto del expectador,観戦テーマ,관전 외관,觀戰外觀
 回放外观,Replay Appearance,Aspecto de la repetición,リプレイテーマ,리플레이 외관,回放外觀
-卡组外观,Deck Appearance,Aspecto de deck,アクセサリー変更,덱 외관,卡組外觀
+卡组外观,Deck Appearance,Aspecto del deck,アクセサリー変更,덱 외관,卡組外觀
 玩家名,Player Name,Nombre del jugador,プレイヤー名,플레이어 이름,玩家名
 壁纸,Wallpapper,Fondo de pantalla,壁紙,벽지,壁紙
 头像,Icon,Avatar,アイコン,아이콘,頭像
@@ -589,7 +589,7 @@ Off,Off,Apagado,ＯＦＦ,Off,Off
 该项设置将与场地设置保持一致。,Set this with Mat setting.,Esta configuración coincidirá con la del escenario de duelo.,フィールドの設定と一致にする,이 설정은 필드 설정과 일치합니다.,該項設定將與場地設定保持一致。
 不设置,No setting,Sin Imagen,設定しない,설정 안 함,不設定
 该项设置将设置为无。,Set to none.,"Esta configuración se establecerá en ""Sin Imagen"".",設定を無しにする,이 설정은 없음으로 설정됩니다.,該項設定將設定為無。
-覆盖卡组设置,Override Deck Appearance,Anular Apariencia del Deck,デッキ設定の上書きにする,카드 그룹 설정 덮어쓰기,覆蓋卡組設置
+覆盖卡组设置,Override Deck Appearance,Configuración del Grupo de tarjetas de cobertura,デッキ設定の上書きにする,카드 그룹 설정 덮어쓰기,覆蓋卡組設置
 自定义,DIY,DIY,カスタマイズ,DIY,自定義
 我方头像：,My Avatar: ,Mi Avatar: ,自分のアバター,My Avatar: ,我方頭像：
 对方头像：,Op Avatar: ,Avatar del Op: ,相手のアバター,Op Avatar: ,對方頭像：

@@ -210,7 +210,7 @@ namespace MDPro3.UI
 
                 var item = Instantiate(Program.I().editDeck.itemOnTable);
                 var handler = item.GetComponent<CardOnEdit>();
-                handler.code = code;
+                handler.Code = code;
 
                 var card = CardsManager.Get(code);
                 var isExtra = card.IsExtraCard();
@@ -271,12 +271,12 @@ namespace MDPro3.UI
 
             var item = Instantiate(Program.I().editDeck.itemOnTable);
             dragItem = item.GetComponent<CardOnEdit>();
-            dragItem.code = code;
+            dragItem.Code = code;
             dragItem.id = 99999999;
 
             var scale = Config.GetUIScale();
             dragItem.transform.SetParent(Program.I().editDeck.cardsOnEditParent, false);
-            dragItem.transform.localScale = Vector3.one * 1.2f * scale;
+            dragItem.transform.localScale = Vector3.one * scale * 1.2f;
             dragItem.button.GetComponent<Image>().raycastTarget = false;
         }
         void OnDrag(PointerEventData eventData)
@@ -291,6 +291,8 @@ namespace MDPro3.UI
             Vector3 uiPosition;
             RectTransformUtility.ScreenPointToWorldPointInRectangle(
                 dragTarget, eventData.position, eventData.enterEventCamera, out uiPosition);
+            uiPosition.z = 90f;
+
             dragTarget.position = uiPosition;
         }
         void OnEndDrag(PointerEventData eventData)

@@ -1,3 +1,6 @@
+using DG.Tweening;
+using DG.Tweening.Core;
+using DG.Tweening.Plugins.Options;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -8,6 +11,7 @@ using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.Playables;
+using YgomSystem.ElementSystem;
 
 namespace MDPro3
 {
@@ -18,6 +22,12 @@ namespace MDPro3
             foreach (var t in parent.GetComponentsInChildren<Transform>())
             { if (t.name == childName) return t; }
             return null;
+        }
+
+        public static void DestroyAllChildren(this Transform transform)
+        {
+            for (int i = 0; i < transform.childCount; i++)
+                UnityEngine.Object.Destroy(transform.GetChild(i).gameObject);
         }
 
         public static void ChangeLayer(GameObject go, string layer, bool setAllChildrenActivate = false)
@@ -211,7 +221,12 @@ namespace MDPro3
         {
             using var request = UnityWebRequestTexture.GetTexture(url);
             request.SetRequestHeader("User-Agent", "MDPro3/" + Application.version + " (" + System.Environment.OSVersion.ToString() + "); Unity/" + Application.unityVersion);
-            await request.SendWebRequest();
+
+            var send = request.SendWebRequest();
+            await TaskUtility.WaitUntil(() => send.isDone);
+            if (!Application.isPlaying)
+                return null;
+
             if (request.result == UnityWebRequest.Result.Success)
             {
                 return DownloadHandlerTexture.GetContent(request);
@@ -223,5 +238,21 @@ namespace MDPro3
             }
         }
         #endregion
+
+        public static Vector3 GetDeckModelTopPosition(ElementObjectManager manager)
+        {
+            var subManager = manager.GetElement<ElementObjectManager>("CardShuffleTop");
+            var returnValue = subManager.GetElement<Transform>("CardModel01_back").position;
+            var position = subManager.GetElement<Transform>("CardModel02_back").position;
+            if (position.y > returnValue.y)
+                returnValue = position;
+            position = subManager.GetElement<Transform>("CardModel03_back").position;
+            if (position.y > returnValue.y)
+                returnValue = position;
+            position = subManager.GetElement<Transform>("CardModel04_back").position;
+            if (position.y > returnValue.y)
+                returnValue = position;
+            return returnValue;
+        }
     }
 }

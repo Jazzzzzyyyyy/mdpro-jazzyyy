@@ -166,7 +166,8 @@ MonoBehaviour:
     m_ClassDefinitionType: 0
     sprite: {fileID: 1616612182, guid: 670cd09fb1bd30e4da359d58a9680303, type: 3}
   spriteInfoList: []
-  fallbackSpriteAssets: []
+  fallbackSpriteAssets:
+  - {fileID: 0}
 --- !u!21 &8433451132805969742
 Material:
   serializedVersion: 8

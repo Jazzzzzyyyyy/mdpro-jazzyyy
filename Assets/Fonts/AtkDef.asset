@@ -71,7 +71,7 @@ MonoBehaviour:
     m_CapLine: 50
     m_MeanLine: 38
     m_Baseline: 0
-    m_DescentLine: -33.333332
+    m_DescentLine: -16
     m_SuperscriptOffset: 66.666664
     m_SuperscriptSize: 0.5
     m_SubscriptOffset: -33.333332
@@ -1191,7 +1191,7 @@ MonoBehaviour:
     italicTypeface: {fileID: 0}
   fontWeights: []
   normalStyle: 0
-  normalSpacingOffset: 0
+  normalSpacingOffset: -5
   boldStyle: 0.75
   boldSpacing: 7
   italicStyle: 35

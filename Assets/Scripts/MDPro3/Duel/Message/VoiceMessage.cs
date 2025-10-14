@@ -76,12 +76,14 @@ namespace MDPro3.Duel
                         var clip = await AudioManager.LoadAudioFileUniAsync(paths[i][j], AudioType.OGGVORBIS);
                         clips[i].Add(clip);
                     }
-                    catch (Exception ex) 
+                    catch (Exception ex)
                     {
                         Debug.LogException(ex);
                     }
                 }
             }
+
+            
 
             for (int i = 0; i < clips.Length; i++)
             {
@@ -130,6 +132,8 @@ namespace MDPro3.Duel
                         await UniTask.WaitForSeconds(clips[i][j].length);
                 }
             }
+            
+        
         }
 
         private bool NeedVoice()
@@ -181,10 +185,24 @@ namespace MDPro3.Duel
             if (voiceData.Count == 0)
                 return;
 
+            // EDIT VOICE CODE
+            var needrecacc = false;
+            if (OcgCore.Accing)
+            {
+                Core.GetUI<MDPro3.UI.ServantUI.OcgCoreUI>().OnNor();needrecacc = true;
+            }
+
+
             var voiceTask = PlayVoiceAsync();
             var clickTask = UniTask.WaitUntil(() => UserInput.MouseLeftDown);
 
             await UniTask.WhenAny(voiceTask, clickTask);
+            
+            //Edit Voice code
+            if(!OcgCore.Accing && needrecacc)
+            {
+                Core.GetUI<MDPro3.UI.ServantUI.OcgCoreUI>().OnAcc();
+            }
         }
 
         protected override UniTask GameMessage_Start(BinaryReader reader)
@@ -768,7 +786,7 @@ namespace MDPro3.Duel
             var value = attackCard.GetData().Attack;
             var attackedCard = Core.GCS_Get(to);
 
-            if(attackedCard != null)
+            if (attackedCard != null)
             {
                 directAttack = false;
                 if (attackedCard.p.InPosition(CardPosition.Attack))
@@ -776,9 +794,11 @@ namespace MDPro3.Duel
                 else
                     value = 0;
             }
+            
 
             bool finalBlow = value >= (from.InMyControl() ? life1 : life0);
             var targetData = from.InMyControl() ? heroVoices : rivalVoices;
+
 
             var data = new VoiceData();
             data.name = Tools.GetRandomDictionaryElement(finalBlow ? targetData.BeforeAttackFinish.rawKvp : targetData.BeforeAttackNormal.rawKvp).Value.shortName;

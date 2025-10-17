@@ -43,8 +43,8 @@
   "FinalAttackSlifer": [
     10000020
   ],
-  "PrereleasePackUrl": "https://cdn02.moecube.com:444/ygopro-super-pre/archive/ygopro-super-pre.ypk",
-  "PrereleasePackVersionUrl": "https://cdn02.moecube.com:444/ygopro-super-pre/data/version.txt",
+  "PrereleasePackUrl": "https://cdntx.moecube.com/ygopro-super-pre/archive/ygopro-super-pre.ypk",
+  "PrereleasePackVersionUrl": "https://cdntx.moecube.com/ygopro-super-pre/data/version.txt",
   "PrereleasePackUrl_DE": "https://github.com/ElderLich/TransSuperpre/raw/main/DE/ygopro-super-pre.ypk",
   "PrereleasePackVersionUrl_DE": "https://github.com/ElderLich/TransSuperpre/raw/main/DE/version.txt",
   "PrereleasePackUrl_EN": "https://github.com/ElderLich/TransSuperpre/raw/main/EN/ygopro-super-pre.ypk",
@@ -63,7 +63,7 @@
   "PrereleasePackVersionUrl_PT": "https://github.com/ElderLich/TransSuperpre/raw/main/PT/version.txt",
   "PrereleasePackUrl_TW": "https://github.com/ElderLich/TransSuperpre/raw/main/ZH-TW/ygopro-super-pre.ypk",
   "PrereleasePackVersionUrl_TW": "https://github.com/ElderLich/TransSuperpre/raw/main/ZH-TW/version.txt",
-  "MDPro3VersionUrl": "https://cdn02.moecube.com:444/mdpro3-data/Version.txt",
+  "MDPro3VersionUrl": "https://cdntx.moecube.com/mdpro3-data/Version.txt",
   "CardRenderPassword": true,
   "SavedCardSize": [
     704,

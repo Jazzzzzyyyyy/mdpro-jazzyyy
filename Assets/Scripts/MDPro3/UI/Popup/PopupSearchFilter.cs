@@ -19,6 +19,8 @@ namespace MDPro3.UI.Popup
         public TMP_InputField inputDefenceTo;
         public TMP_InputField inputScaleFrom;
         public TMP_InputField inputScaleTo;
+        public TMP_InputField inputGPFrom;
+        public TMP_InputField inputGPTo;
         public TMP_InputField inputYearFrom;
         public TMP_InputField inputYearTo;
 
@@ -51,28 +53,34 @@ namespace MDPro3.UI.Popup
                         toggle.SetToggleOn();
                     else if (toggle.group == 10 && (toggle.filterCode & f[10]) > 0)
                         toggle.SetToggleOn();
+                    else if (toggle.group == 11 && (toggle.filterCode & f[11]) > 0)
+                        toggle.SetToggleOn();
                 }
 
-                if (f[11] > 0)
-                    inputLevelFrom.text = f[11].ToString();
                 if (f[12] > 0)
-                    inputLevelTo.text = f[12].ToString();
+                    inputLevelFrom.text = f[12].ToString();
                 if (f[13] > 0)
-                    inputAttackFrom.text = f[13].ToString();
+                    inputLevelTo.text = f[13].ToString();
                 if (f[14] > 0)
-                    inputAttackTo.text = f[14].ToString();
+                    inputAttackFrom.text = f[14].ToString();
                 if (f[15] > 0)
-                    inputDefenceFrom.text = f[15].ToString();
+                    inputAttackTo.text = f[15].ToString();
                 if (f[16] > 0)
                     inputDefenceTo.text = f[16].ToString();
                 if (f[17] > 0)
                     inputScaleFrom.text = f[17].ToString();
                 if (f[18] > 0)
                     inputScaleTo.text = f[18].ToString();
-                if (f[19] > 0)
-                    inputYearFrom.text = f[19].ToString();
-                if (f[20] > 0)
-                    inputYearTo.text = f[20].ToString();
+                if (f[19] >= 0)
+                    inputGPFrom.text = f[19].ToString();
+                if (f[20] >= 0)
+                    inputGPTo.text = f[20].ToString();
+                if (f[21] > 0)
+                    inputYearFrom.text = f[21].ToString();
+                if (f[22] > 0)
+                    inputYearTo.text = f[22].ToString();
+                if (f[23] > 0)
+                    inputDefenceFrom.text = f[23].ToString();
             }
             Manager.GetElement<SelectionButton>("ButtonPack")
                 .SetButtonText(CardCollectionView.packName == string.Empty 
@@ -115,6 +123,7 @@ namespace MDPro3.UI.Popup
             //Yes = 1
             //No = 2
             long cutin = 0;
+            long video = 0;
             long link = 0;
 
             bool dirty = false;
@@ -144,11 +153,13 @@ namespace MDPro3.UI.Popup
                     else if (toggle.group == 9)
                         cutin += toggle.filterCode;
                     else if (toggle.group == 10)
+                        video += toggle.filterCode;
+                    else if (toggle.group == 11)
                         link += toggle.filterCode;
                 }
             }
             var filters = new List<long>()
-            { type, attribute, spellType, race, ability, limit, pool, effect, rarity, cutin, link };
+            { type, attribute, spellType, race, ability, limit, pool, effect, rarity, cutin, video, link };
             if (inputLevelFrom.text.Length > 0)
             {
                 dirty = true;
@@ -205,6 +216,20 @@ namespace MDPro3.UI.Popup
             }
             else
                 filters.Add(-233);
+            if (inputGPFrom.text.Length > 0)
+            {
+                dirty = true;
+                filters.Add(long.Parse(inputGPFrom.text));
+            }
+            else
+                filters.Add(-233);
+            if (inputGPTo.text.Length > 0)
+            {
+                dirty = true;
+                filters.Add(long.Parse(inputGPTo.text));
+            }
+            else
+                filters.Add(-233);
             if (inputYearFrom.text.Length > 0)
             {
                 dirty = true;
@@ -252,6 +277,8 @@ namespace MDPro3.UI.Popup
             inputDefenceTo.text = string.Empty;
             inputScaleFrom.text = string.Empty;
             inputScaleTo.text = string.Empty;
+            inputGPFrom.text = string.Empty;
+            inputGPTo.text = string.Empty;
             inputYearFrom.text = string.Empty;
             inputYearTo.text = string.Empty;
             Manager.GetElement<SelectionButton>("ButtonPack").SetButtonText(InterString.Get("所有卡包"));

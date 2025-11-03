@@ -9,7 +9,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using System.Security.AccessControl;
 using System.Threading;
 using TMPro;
 using UnityEngine;
@@ -590,7 +589,27 @@ namespace MDPro3.UI
             if (texture == null)
                 texture = rawImage.material.mainTexture;
 
+            if(texture is RenderTexture)
+            {
+                _ = SaveShowingCardAsyncIfVideo(card.Id);
+                return;
+            }
+
             if (SaveCardPicture(card.Id, (Texture2D)texture))
+            {
+                var fullPath = Program.PATH_CARD_PIC + card.Id + Program.EXPANSION_PNG;
+                MessageManager.Toast(InterString.Get("卡图已保存于：[?]", fullPath));
+            }
+            else
+            {
+                MessageManager.Toast(InterString.Get("没有写入权限，无法保存。"));
+            }
+        }
+
+        private async UniTask SaveShowingCardAsyncIfVideo(int code)
+        {
+            var result = await SaveCardAsync(code, default);
+            if (result)
             {
                 var fullPath = Program.PATH_CARD_PIC + card.Id + Program.EXPANSION_PNG;
                 MessageManager.Toast(InterString.Get("卡图已保存于：[?]", fullPath));
@@ -683,20 +702,13 @@ namespace MDPro3.UI
 
             for (int i = 0; i < cards.Count; i++)
             {
-                var format = Settings.Data.SavedCardFormat;
-                if (format != Program.EXPANSION_PNG)
-                    format = Program.EXPANSION_JPG;
-                if (File.Exists(Program.PATH_CARD_PIC + cards[i] + format))
-                    continue;
-
-                var tex = await CardImageLoader.LoadCardAsync(cards[i], false, token);
-                if (!SaveCardPicture(cards[i], tex)
-                    || !CardImageLoader.lastCardFoundArt
-                    || !CardImageLoader.lastCardRenderSucceed)
+                var result = await SaveCardAsync(cards[i], token);
+                if (!result)
                 {
                     errorCount++;
                     errorLog += cards[i].ToString() + Program.STRING_LINE_BREAK;
                 }
+
                 popupProgress.text.text = i + Program.STRING_SLASH + cards.Count + Program.STRING_LINE_BREAK + InterString.Get("错误：") + errorCount;
                 popupProgress.progressBar.value = (float)i / cards.Count;
                 if (cards.Count <= 100)
@@ -706,6 +718,22 @@ namespace MDPro3.UI
             if (errorCount > 0)
                 File.WriteAllText(errorLogPath, errorLog);
             //Debug.Log($"Time Used: {Time.time - time}");
+        }
+
+        private async UniTask<bool> SaveCardAsync(int code, CancellationToken token)
+        {
+            var format = Settings.Data.SavedCardFormat;
+            if (format != Program.EXPANSION_PNG)
+                format = Program.EXPANSION_JPG;
+            if (File.Exists(Program.PATH_CARD_PIC + code + format))
+                return true;
+
+            var tex = await CardImageLoader.LoadCardAsync(code, false, token, true);
+            if (!SaveCardPicture(code, (Texture2D)tex)
+                || !CardImageLoader.lastCardFoundArt
+                || !CardImageLoader.lastCardRenderSucceed)
+                return false;
+            return true;
         }
 
         private void StopSaving()

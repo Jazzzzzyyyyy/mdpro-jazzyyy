@@ -692,7 +692,15 @@ namespace MDPro3.Duel
             data.isHero = player == 0;
             data.wait = false;
             data.delay = 0f;
+            voiceData.Add(data);
 
+            var data2 = new VoiceData();
+            data2.name = Tools.GetRandomDictionaryElement(DamageIsBig(value)?targetData.AfterBigDamage.rawKvp:targetData.AfterDamage.rawKvp).Value.shortName;
+            data2.num = GetVoiceNum(targetData, data2.name);
+            data2.isHero = player == 0;
+            data2.wait = false;
+            data2.delay = 0f;
+            voiceData.Add(data2);
             return UniTask.CompletedTask;
         }
 
@@ -719,7 +727,15 @@ namespace MDPro3.Duel
             data.isHero = player == 0;
             data.wait = false;
             data.delay = 0f;
+            voiceData.Add(data);
 
+            var data2 = new VoiceData();
+            data2.name = Tools.GetRandomDictionaryElement(DamageIsBig(value)?targetData.AfterBigDamage.rawKvp:targetData.AfterDamage.rawKvp).Value.shortName;
+            data2.num = GetVoiceNum(targetData, data2.name);
+            data2.isHero = player == 0;
+            data2.wait = false;
+            data2.delay = 0f;
+            voiceData.Add(data2);
             return UniTask.CompletedTask;
         }
 
@@ -766,6 +782,14 @@ namespace MDPro3.Duel
             data.wait = false;
             data.delay = 0f;
             voiceData.Add(data);
+
+            var data2 = new VoiceData();
+            data2.name = Tools.GetRandomDictionaryElement(DamageIsBig(value)?targetData.AfterBigDamage.rawKvp:targetData.AfterDamage.rawKvp).Value.shortName;
+            data2.num = GetVoiceNum(targetData, data2.name);
+            data2.isHero = player == 0;
+            data2.wait = false;
+            data2.delay = 0f;
+            voiceData.Add(data2);
 
             return UniTask.CompletedTask;
         }

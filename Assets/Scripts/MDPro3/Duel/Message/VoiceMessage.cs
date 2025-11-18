@@ -368,8 +368,8 @@ namespace MDPro3.Duel
             if (turns == 1)
                 return UniTask.CompletedTask;
 
-            var targetData = !myTurn ? rivalVoices : heroVoices;
-            var leadingState = !myTurn ? LeadingStateOfRival() : LeadingStateOfHero();
+            var targetData = myTurn ? heroVoices : rivalVoices;
+            var leadingState = myTurn ? LeadingStateOfHero() : LeadingStateOfRival();
 
             var data = new VoiceData();
             data.name = GetVoiceBySituation(targetData.TurnStart, leadingState);

@@ -34,7 +34,7 @@ namespace MDPro3.Duel
         private bool lastVoiceIsRelease;
 
         private readonly List<VoiceData> voiceData = new();
-        private readonly List<VoiceData> delayVoiceData = new();
+        private readonly List<VoiceData> aloneVoiceData = new();
 
         #endregion
 
@@ -84,7 +84,83 @@ namespace MDPro3.Duel
                 }
             }
 
-            
+
+
+            for (int i = 0; i < clips.Length; i++)
+            {
+                for (int j = 0; j < clips[i].Count; j++)
+                {
+                    if (j == 0)
+                        await UniTask.WaitForSeconds(voiceData[i].delay);
+
+                    var line = GetLine(Path.GetFileNameWithoutExtension(paths[i][j]), voiceData[i].isHero);
+                    if (line != null)
+                    {
+                        var item = ABLoader.LoadMasterDuelGameObject(voiceData[i].isHero ? "DuelChatItemMe" : "DuelChatItemOp");
+
+                        item.transform.SetParent(Core.transform.GetChild(0), false);
+                        var handler = item.GetComponent<ChatItemHandler>();
+                        handler.text = line.text;
+
+                        if (clips[i][j] == null)
+                        {
+                            Debug.LogError("Voice File " + paths[i][j] + " not Found!");
+                            return;
+                        }
+
+                        handler.time = clips[i][j].length;
+                        handler.frame = line.frame;
+                        if (voiceData[i].isHero)
+                        {
+                            if (Core.duelChat0 != null)
+                                Core.duelChat0.BeGray();
+                            Core.duelChat0 = handler;
+                        }
+                        else
+                        {
+                            if (Core.duelChat1 != null)
+                                Core.duelChat1.BeGray();
+                            Core.duelChat1 = handler;
+                        }
+
+                        Core.SetCharacterFace(voiceData[i].isHero ? heroString : rivalString, line.face, voiceData[i].isHero, 0f);
+                        Core.SetCharacterFace(voiceData[i].isHero ? heroString : rivalString, 1, voiceData[i].isHero, clips[i][j].length - 0.1f);
+                    }
+
+                    AudioManager.PlayVoice(clips[i][j]);
+
+                    if (voiceData[i].wait)
+                        await UniTask.WaitForSeconds(clips[i][j].length);
+                }
+            }
+
+
+        }
+        private async UniTask PlayAloneVoiceAsync(List<VoiceData> vdsource)
+        {
+            var voiceData = new List<VoiceData>(vdsource);
+            var paths = GetVoicePaths(voiceData);
+            var clips = new List<AudioClip>[paths.Length];
+            for (int i = 0; i < clips.Length; i++)
+                clips[i] = new List<AudioClip>();
+
+            for (int i = 0; i < paths.Length; i++)
+            {
+                for (int j = 0; j < paths[i].Count; j++)
+                {
+                    try
+                    {
+                        var clip = await AudioManager.LoadAudioFileUniAsync(paths[i][j], AudioType.OGGVORBIS);
+                        clips[i].Add(clip);
+                    }
+                    catch (Exception ex)
+                    {
+                        Debug.LogException(ex);
+                    }
+                }
+            }
+
+
 
             for (int i = 0; i < clips.Length; i++)
             {
@@ -136,7 +212,6 @@ namespace MDPro3.Duel
             
         
         }
-
         private bool NeedVoice()
         {
             return Config.GetBool(OcgCore.condition + "Voice", false);
@@ -179,47 +254,43 @@ namespace MDPro3.Duel
             }
 
             voiceData.Clear();
-            if (delayVoiceData.Count > 0)
-            {
-                for (int i = 0; i < delayVoiceData.Count; i++) voiceData.Add(delayVoiceData[i]);
-                delayVoiceData.Clear();
-            }
-
-
 
             await base.Process(p);
 
-            if (voiceData.Count == 0)
-                return;
+            var needrecacc = OcgCore.Accing&&(voiceData.Count>0||aloneVoiceData.Count>0);
 
-            // EDIT VOICE CODE
-            var needrecacc = false;
-            if (OcgCore.Accing)
+            if (voiceData.Count > 0)
             {
-                Core.GetUI<MDPro3.UI.ServantUI.OcgCoreUI>().OnNor();needrecacc = true;
+
+                Core.GetUI<MDPro3.UI.ServantUI.OcgCoreUI>().OnNor();
+
+                var voiceTask = PlayVoiceAsync();
+
+                var clickTask = UniTask.WaitUntil(() => UserInput.MouseLeftDown);
+                await UniTask.WhenAny(voiceTask, clickTask);
+
+                if (!OcgCore.Accing && needrecacc)
+                {
+                    Core.GetUI<MDPro3.UI.ServantUI.OcgCoreUI>().OnAcc();
+                }
             }
-
-
-            var voiceTask = PlayVoiceAsync();
-
-            // if (!isInstantMessage)
-            // {
-
-            // }
-            // else if (needrecacc)
-            // {
-            //     UniTask.Create(
-            //         async () =>
-            //         {
-            //         }
-            //     );
-            // }
-            var clickTask = UniTask.WaitUntil(() => UserInput.MouseLeftDown);
-            await UniTask.WhenAny(voiceTask, clickTask);
-            //Edit Voice code
-            if (!OcgCore.Accing && needrecacc)
+            
+            if(aloneVoiceData.Count > 0)
             {
-                Core.GetUI<MDPro3.UI.ServantUI.OcgCoreUI>().OnAcc();
+                UniTask.Create(async () =>
+                {
+                    Core.GetUI<MDPro3.UI.ServantUI.OcgCoreUI>().OnNor();
+                    var voiceTask = PlayAloneVoiceAsync(aloneVoiceData);
+                    var clickTask = UniTask.WaitUntil(() => UserInput.MouseLeftDown);
+
+                    aloneVoiceData.Clear();
+                    await UniTask.WhenAny(voiceTask, clickTask);
+
+                    if (!OcgCore.Accing && needrecacc)
+                    {
+                        Core.GetUI<MDPro3.UI.ServantUI.OcgCoreUI>().OnAcc();
+                    }
+                });
             }
 
 
@@ -713,7 +784,7 @@ namespace MDPro3.Duel
             data.isHero = player == 0;
             data.wait = true;
             data.delay = 0f;
-            delayVoiceData.Add(data);
+            aloneVoiceData.Add(data);
 
             var data2 = new VoiceData();
             if(DamageIsBig(value))
@@ -724,7 +795,7 @@ namespace MDPro3.Duel
             data2.isHero = player == 0;
             data2.wait = true;
             data2.delay = 0.26f;
-            delayVoiceData.Add(data2);
+            aloneVoiceData.Add(data2);
 
             // isInstantMessage = true;
 
@@ -754,7 +825,7 @@ namespace MDPro3.Duel
             data.isHero = player == 0;
             data.wait = true;
             data.delay = 0f;
-            delayVoiceData.Add(data);
+            aloneVoiceData.Add(data);
 
             var data2 = new VoiceData();
             if(DamageIsBig(value))
@@ -765,7 +836,7 @@ namespace MDPro3.Duel
             data2.isHero = player == 0;
             data2.wait = true;
             data2.delay = 0.26f;
-            delayVoiceData.Add(data2);
+            aloneVoiceData.Add(data2);
 
             // isInstantMessage = true;
 
@@ -814,7 +885,7 @@ namespace MDPro3.Duel
             data.isHero = player == 0;
             data.wait = true;
             data.delay = 0f;
-            delayVoiceData.Add(data);
+            aloneVoiceData.Add(data);
 
             var data2 = new VoiceData();
             if(DamageIsBig(diff))
@@ -825,7 +896,7 @@ namespace MDPro3.Duel
             data2.isHero = player == 0;
             data2.wait = true;
             data2.delay = 0.26f;
-            delayVoiceData.Add(data2);
+            aloneVoiceData.Add(data2);
 
             // isInstantMessage = true;
 

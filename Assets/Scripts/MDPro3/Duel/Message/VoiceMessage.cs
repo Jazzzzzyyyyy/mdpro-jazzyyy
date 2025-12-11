@@ -277,7 +277,7 @@ namespace MDPro3.Duel
             
             if(aloneVoiceData.Count > 0)
             {
-                UniTask.Create(async () =>
+                _ = UniTask.Create(async () =>
                 {
                     Core.GetUI<MDPro3.UI.ServantUI.OcgCoreUI>().OnNor();
                     var voiceTask = PlayAloneVoiceAsync(aloneVoiceData);
@@ -460,6 +460,19 @@ namespace MDPro3.Duel
             if (NeedBeforeCardEffect(gps.InMyControl()))
                 voiceData.Add(GetBeforeCardEffectData(target, gps.InMyControl()));
 
+            var card = Core.GCS_Get(gps);
+            if (card != null)
+            {
+                var spdata = GetVoiceByCard(target, target.MainMagicTrap, card.GetData().Id, 0, gps.InMyControl());
+                if (spdata.name != string.Empty)
+                {
+                    ignoreNextChaining = true;
+                    voiceData.Add(spdata);
+                    return UniTask.CompletedTask;
+                }
+            }
+            
+
             var data = new VoiceData();
             data.name = GetVoiceBySubCategory(target.CardEffect, (int)CardEffectSub.Reverse, (int)CardEffectSub.Reverse, 0);
             data.num = GetVoiceNum(target, data.name);
@@ -476,6 +489,8 @@ namespace MDPro3.Duel
             data2.wait = true;
             data2.delay = 0f;
             voiceData.Add(data2);
+
+          
 
             ignoreNextChaining = true;
 
@@ -507,6 +522,7 @@ namespace MDPro3.Duel
             var patternIndex = 0;
             var fromHand = false;
             var isMe = to.InMyControl();
+            var advance = lastVoiceIsRelease;
 
             if ((reason & (uint)CardReason.RELEASE) > 0
                 && card.GetData().HasType(CardType.Monster))
@@ -517,6 +533,7 @@ namespace MDPro3.Duel
                 subCategory = (int)SummonSub.Release;
                 subInCase = subCategory;
                 lastVoiceIsRelease = true;
+                
             }
             else
                 lastVoiceIsRelease = false;
@@ -526,6 +543,10 @@ namespace MDPro3.Duel
                 code = nextPack.Data.reader.ReadInt32();
                 category = (int)Category.Summon;
                 subCategory = (int)SummonSub.Normal;
+                if (advance || OcgCore.materialCards.Count > 0)
+                {
+                    subCategory = (int)SummonSub.Advance;
+                }
 
                 isMe = from.controller == 0;
                 var targetDataT = isMe ? heroVoices : rivalVoices;

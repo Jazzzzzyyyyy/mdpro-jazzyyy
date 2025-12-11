@@ -83,6 +83,8 @@ namespace MDPro3.Duel
         public List<PlaceSelector> places = new();
         private DuelFinalBlow duelFinalBlow;
 
+        private bool playingExFinalBatEffect = false;
+
         #endregion
 
         #region Public
@@ -2107,6 +2109,7 @@ namespace MDPro3.Duel
             if (returnValue == FinalAttackType.Normal)
                 return false;
             await AnimationFinalAttackAsync(returnValue, attackCard, attackedPosition);
+            
             return true;
         }
 
@@ -2123,18 +2126,22 @@ namespace MDPro3.Duel
             DOTween.To(() => Program.instance.TimeScale, x => Program.instance.TimeScale = x, 1f, 0.85f).SetEase(Ease.InQuad);
 #endif
 
-            if (life0 <= 0)
+            if (!playingExFinalBatEffect)
             {
-                var hitObj = ABLoader.LoadMasterDuelGameObject("fxp_dithit_fin_near_001");
-                hitObj.transform.position = new Vector3(0, 15, -25);
-                UnityEngine.Object.Destroy(hitObj, 10);
+                if (life0 <= 0)
+                {
+                    var hitObj = ABLoader.LoadMasterDuelGameObject("fxp_dithit_fin_near_001");
+                    hitObj.transform.position = new Vector3(0, 15, -25);
+                    UnityEngine.Object.Destroy(hitObj, 10);
+                }
+                if (life1 <= 0)
+                {
+                    var hitObj = ABLoader.LoadMasterDuelGameObject("fxp_dithit_fin_far_001");
+                    hitObj.transform.position = new Vector3(0, 15, 25);
+                    UnityEngine.Object.Destroy(hitObj, 10);
+                }
             }
-            if (life1 <= 0)
-            {
-                var hitObj = ABLoader.LoadMasterDuelGameObject("fxp_dithit_fin_far_001");
-                hitObj.transform.position = new Vector3(0, 15, 25);
-                UnityEngine.Object.Destroy(hitObj, 10);
-            }
+
         }
 
         public void ReleaseTurnObjects()
@@ -2561,6 +2568,7 @@ namespace MDPro3.Duel
         {
             if (type == FinalAttackType.Normal)
                 return;
+            playingExFinalBatEffect = true;
 
             Sequence sequence;
             if (type == FinalAttackType.BlueEyes)
@@ -2577,6 +2585,7 @@ namespace MDPro3.Duel
                 sequence = await AnimationFinalAttack_Obelisk(attackCard, attackedPosition);
 
             await sequence.WaitAsync();
+            playingExFinalBatEffect = false;
         }
 
         private async UniTask<Sequence> AnimationFinalAttack_BlueEyes(GameCard attackCard, Vector3 attackedPosition)

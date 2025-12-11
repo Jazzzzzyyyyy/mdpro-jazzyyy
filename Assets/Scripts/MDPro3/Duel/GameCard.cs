@@ -1349,9 +1349,9 @@ namespace MDPro3
             if (p.InLocation(CardLocation.Removed)
                 || p.InLocation(CardLocation.Deck)
                 || p.InLocation(CardLocation.Extra))
-                sequence.Join(turn.DOLocalRotate(new Vector3(0, 0, rotation.z), moveTime * 0.8f));
+                sequence.Join(turn.DOLocalRotate(new Vector3(0, 0, rotation.z), moveTime * 0.6f));
             else
-                sequence.Join(turn.DOLocalRotate(new Vector3(0, (rotation.y == 0) || (rotation.y == 180) ? 0 : 270, rotation.z), moveTime * 0.8f).SetEase(ease));
+                sequence.Join(turn.DOLocalRotate(new Vector3(0, (rotation.y == 0) || (rotation.y == 180) ? 0 : 270, rotation.z), moveTime * 0.6f).SetEase(ease));
             if (handAppeal && overrideMoveTime == 0)
             {
                 sequence.Join(turn.DOLocalMove(new Vector3(0, 0, 10), moveTime).SetEase(Ease.OutCubic).OnComplete(() =>
@@ -1508,21 +1508,21 @@ namespace MDPro3
             var midP = position;
             midP.y = 15;
 
-            sequence.Append(manager.transform.DOMove(midP, 0.5f).SetEase(Ease.InOutSine));
+            sequence.Append(manager.transform.DOMove(midP, 0.4f).SetEase(Ease.InOutSine));
 
-            sequence.Join(manager.transform.DOLocalRotate(Vector3.zero, 0.5f).SetEase(Ease.InOutSine));
-            sequence.Join(cardPlane.DOLocalRotate(new Vector3(0, (angle.y == 0) || (angle.y == 270) ? 0 : 180, 0), 0.5f).SetEase(Ease.InOutSine));
-            sequence.Join(pivot.DOScale(GetCardScale(p), 0.26f).SetEase(Ease.InOutSine));
-            sequence.Join(pivot.DOLocalMove(Vector3.zero, 0.26f).SetEase(Ease.InOutSine));
-            sequence.Join(pivot.DOLocalRotate(Vector3.zero, 0.26f).SetEase(Ease.InOutSine));
+            sequence.Join(manager.transform.DOLocalRotate(Vector3.zero, 0.4f).SetEase(Ease.InOutSine));
+            sequence.Join(cardPlane.DOLocalRotate(new Vector3(0, (angle.y == 0) || (angle.y == 270) ? 0 : 180, 0), 0.4f).SetEase(Ease.InOutSine));
+            sequence.Join(pivot.DOScale(GetCardScale(p), 0.16f).SetEase(Ease.InOutSine));
+            sequence.Join(pivot.DOLocalMove(Vector3.zero, 0.16f).SetEase(Ease.InOutSine));
+            sequence.Join(pivot.DOLocalRotate(Vector3.zero, 0.16f).SetEase(Ease.InOutSine));
 
-            sequence.Join(offset.DOLocalMove(Vector3.zero, 0.5f).SetEase(Ease.InOutSine));
-            sequence.Join(offset.DOLocalRotate(Vector3.zero, 0.5f).SetEase(Ease.InOutSine));
-            sequence.Join(turn.DOLocalRotate(new Vector3(0, (angle.y == 0) || (angle.y == 180) ? 0 : 270, angle.z), 0.3f).SetEase(Ease.InOutSine));
+            sequence.Join(offset.DOLocalMove(Vector3.zero, 0.4f).SetEase(Ease.InOutSine));
+            sequence.Join(offset.DOLocalRotate(Vector3.zero, 0.4f).SetEase(Ease.InOutSine));
+            sequence.Join(turn.DOLocalRotate(new Vector3(0, (angle.y == 0) || (angle.y == 180) ? 0 : 270, angle.z), 0.2f).SetEase(Ease.InOutSine));
 
             sequence.AppendInterval(0.26f);
-            sequence.Insert(timePassed + interval + 0.26f, pivot.DOLocalMoveY(10, 0.5f).SetEase(Ease.InOutQuart));
-            sequence.Insert(timePassed + interval + 0.26f, pivot.DOLocalRotate(new Vector3(-35, 0, 0), 0.5f).SetEase(Ease.InOutQuart));
+            sequence.Insert(timePassed + interval + 0.26f, pivot.DOLocalMoveY(10, 0.4f).SetEase(Ease.InOutQuart));
+            sequence.Insert(timePassed + interval + 0.26f, pivot.DOLocalRotate(new Vector3(-35, 0, 0), 0.4f).SetEase(Ease.InOutQuart));
 
             sequence.Append(pivot.DOLocalRotate(Vector3.zero, 0.14f).SetEase(Ease.InQuart));
             sequence.Join(pivot.DOLocalMoveY(0, 0.14f).SetEase(Ease.InQuart));
@@ -1560,20 +1560,20 @@ namespace MDPro3
             var midP = position;
             midP.y = 10;
 
-            sequence.Append(manager.transform.DOMove(midP, 0.4f).SetEase(Ease.InOutSine));
-            sequence.Join(manager.transform.DOLocalRotate(Vector3.zero, 0.4f).SetEase(Ease.InOutSine));
-            sequence.Join(cardPlane.DOLocalRotate(new Vector3(0, (angle.y == 0) || (angle.y == 270) ? 0 : 180, 0), 0.4f).SetEase(Ease.InOutSine));
+            sequence.Append(manager.transform.DOMove(midP, 0.3f).SetEase(Ease.InOutSine));
+            sequence.Join(manager.transform.DOLocalRotate(Vector3.zero, 0.3f).SetEase(Ease.InOutSine));
+            sequence.Join(cardPlane.DOLocalRotate(new Vector3(0, (angle.y == 0) || (angle.y == 270) ? 0 : 180, 0), 0.3f).SetEase(Ease.InOutSine));
             sequence.Join(pivot.DOScale(GetCardScale(p), 0.16f).SetEase(Ease.InOutSine));
             sequence.Join(pivot.DOLocalMove(Vector3.zero, 0.16f).SetEase(Ease.InOutSine));
             sequence.Join(pivot.DOLocalRotate(Vector3.zero, 0.16f).SetEase(Ease.InOutSine));
 
-            sequence.Join(offset.DOLocalMove(Vector3.zero, 0.4f).SetEase(Ease.InOutSine));
-            sequence.Join(offset.DOLocalRotate(Vector3.zero, 0.4f).SetEase(Ease.InOutSine));
-            sequence.Join(turn.DOLocalRotate(new Vector3(0, (angle.y == 0) || (angle.y == 180) ? 0 : 270, angle.z), 0.2f).SetEase(Ease.InOutSine));
+            sequence.Join(offset.DOLocalMove(Vector3.zero, 0.3f).SetEase(Ease.InOutSine));
+            sequence.Join(offset.DOLocalRotate(Vector3.zero, 0.3f).SetEase(Ease.InOutSine));
+            sequence.Join(turn.DOLocalRotate(new Vector3(0, (angle.y == 0) || (angle.y == 180) ? 0 : 270, angle.z), 0.1f).SetEase(Ease.InOutSine));
 
             sequence.AppendInterval(0.16f);
-            sequence.Insert(timePassed + interval + 0.16f, pivot.DOLocalMoveY(5, 0.4f).SetEase(Ease.InOutQuart));
-            sequence.Insert(timePassed + interval + 0.16f, pivot.DOLocalRotate(new Vector3(-15, 0, 0), 0.4f).SetEase(Ease.InOutQuart));
+            sequence.Insert(timePassed + interval + 0.16f, pivot.DOLocalMoveY(5, 0.3f).SetEase(Ease.InOutQuart));
+            sequence.Insert(timePassed + interval + 0.16f, pivot.DOLocalRotate(new Vector3(-15, 0, 0), 0.3f).SetEase(Ease.InOutQuart));
 
             sequence.Append(pivot.DOLocalRotate(Vector3.zero, 0.14f).SetEase(Ease.InQuart));
             sequence.Join(pivot.DOLocalMoveY(0, 0.14f).SetEase(Ease.InQuart));

@@ -103,6 +103,8 @@ namespace MDPro3.Duel
             UIManager.UIBlackIn(Core.TransitionTime);
             await UniTask.WaitForSeconds(Core.TransitionTime);
             await UniTask.WaitUntil(() => Appearance.loaded);
+            await ABLoader.CacheMasterDuelBundles();
+            Program.instance.ocgcore.LoadDuelButton();
 
             CameraManager.ShiftTo3D();
             UIManager.HideExitButton(0);
@@ -1448,6 +1450,8 @@ namespace MDPro3.Duel
                 code = 63166096;
             if (card.GetData().Id == 32807848)//闪刀起动-交闪 异画
                 code = 32807848;
+            if (card.GetData().Id == 49238329)//强欲而金满之壶 异画
+                code = 49238329;
 
             var targetFolder = Program.root + "MasterDuel/Card/" + code.ToString();
 #if UNITY_STANDALONE_WIN && !UNITY_EDITOR
@@ -1815,6 +1819,12 @@ namespace MDPro3.Duel
                         DuelEffectUtil.SetDeckModelAppearance(manager.GetElement<ElementObjectManager>("MainDeck")
                             , Core.GetLocationCardCount(CardLocation.Deck, 0), myDeck);
                     }
+                }
+                // 强欲而金满之壶 异画
+                else if (code == 49238329)
+                {
+                    AudioManager.PlaySE("SE_EV_EF14144_v2");
+                    effect = GetCardEffectPrefab("Ef21234");
                 }
 
                 var director = effect.GetComponent<PlayableDirector>();

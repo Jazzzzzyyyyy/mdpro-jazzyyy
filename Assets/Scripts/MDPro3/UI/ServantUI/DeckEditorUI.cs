@@ -1,18 +1,18 @@
+using Cysharp.Threading.Tasks;
 using DG.Tweening;
+using MDPro3.Duel.YGOSharp;
+using MDPro3.Net;
+using MDPro3.Servant;
+using MDPro3.Utility;
+using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.IO;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
-using MDPro3.Servant;
 using static MDPro3.Servant.DeckEditor;
-using MDPro3.Duel.YGOSharp;
-using MDPro3.Net;
-using System.Collections;
-using System;
-using System.IO;
-using System.Threading.Tasks;
-using MDPro3.Utility;
-using Cysharp.Threading.Tasks;
 
 namespace MDPro3.UI.ServantUI
 {
@@ -199,7 +199,7 @@ namespace MDPro3.UI.ServantUI
         {
             base.ShowEvent();
 
-            if (!gotoAppearance)
+            if (!gotoAppearance && !RoomServant.FromHandTest)
             {
                 if (condition != Condition.ChangeSide)
                     ShowBackButton();
@@ -209,6 +209,7 @@ namespace MDPro3.UI.ServantUI
             else
             {
                 gotoAppearance = false;
+                RoomServant.FromHandTest = false;
                 ShowBackButton();
             }
 
@@ -228,7 +229,7 @@ namespace MDPro3.UI.ServantUI
         {
             base.AfterHideEvent();
 
-            if(!gotoAppearance)
+            if(!gotoAppearance && !RoomServant.FromHandTest)
                 Dispose();
         }
 
@@ -922,6 +923,68 @@ namespace MDPro3.UI.ServantUI
 
         public void OnHandTest()
         {
+            if (!DeckView.deckLoaded)
+                return;
+            if (condition == Condition.ChangeSide)
+                return;
+            if (!DeckIsFromLocal)
+            {
+                if (condition != Condition.ChangeSide)
+                    MessageManager.Toast(InterString.Get("请先保存卡组"));
+                return;
+            }
+
+            _ = HandTestAsync();
+        }
+
+        private async UniTask HandTestAsync()
+        {
+            int port = 7911;
+            while (!TcpHelper.IsPortAvailable(port))
+            {
+                port++;
+                if (port == 65536)
+                    port = 1;
+            }
+
+            string args = string.Format("{0} {1} {2} {3} {4} {5} {6} {7} {8} {9} {10} {11}",
+                port.ToString(),
+                "-1", // Banlist
+                "5", // Pool
+                "0", // Model
+                "F", // 
+                "T", // No Check
+                "T", // No Shuffle
+                "8000", // Life Point
+                "5", // Hand
+                "1", // Time
+                "0", // Draw
+                "0"
+                );
+
+            RoomServant.FromSolo = false;
+            RoomServant.FromLocalHost = false;
+            RoomServant.FromHandTest = true;
+            YgoServer.StartServer(args);
+
+            UIManager.UIBlackIn(0.3f);
+            await UniTask.WaitForSeconds(0.3f);
+
+            OcgCore.handler = Program.instance.room.Handler;
+
+            Program.instance.solo.StartAIForHandTest(port);
+            await UniTask.Delay(100);
+            bool joined = false;
+            TcpHelper.LinkStart("127.0.0.1", Config.Get("DuelPlayerName0", Config.EMPTY_STRING), port.ToString(), string.Empty, true, () => joined = true);
+            await UniTask.WaitUntil(() => joined);
+
+            var deck = DeckView.FromObjectDeckToCodedDeck();
+            TcpHelper.CtosMessage_UpdateDeck(deck);
+            TcpHelper.CtosMessage_HsReady();
+            await UniTask.Delay(50);
+            TcpHelper.CtosMessage_HandResult(2);
+            await UniTask.Delay(50);
+            TcpHelper.CtosMessage_TpResult(true);
 
         }
 

@@ -30,6 +30,7 @@ namespace MDPro3
             //{13, "New" },
             {12, "DIY Green" },
             {14, "Neos" },
+            {16, "Classic Grid" },
 
             {50, "DIY Classic" },
             {51, "DIY Classic2" },
@@ -81,7 +82,7 @@ namespace MDPro3
                 id = 10;
 
             var endString = id.ToString("D4");
-            back = ABLoader.LoadFromFolder<SpriteScaler>("MasterDuel/Background/Back" + endString, true, true);
+            back = ABLoader.LoadFromFolder<SpriteRenderer>("MasterDuel/Background/Back" + endString, true, true);
             if (back.TryGetComponent<SpriteScaler>(out var spriteScaler))
             {
                 spriteScaler.isApplyOnUpdate = true;

@@ -192,18 +192,26 @@ namespace MDPro3.Servant
         {
             base.Initialize();
             SystemEvent.OnResolutionChange += RefreshHandCardPositionInstant;
+        }
 
-            btnConfirm = ABLoader.LoadMasterDuelGameObject("DuelButton").GetComponent<DuelButton>();
-            btnConfirm.response.Add(-4);
-            btnConfirm.hint = InterString.Get("确认");
-            btnConfirm.type = ButtonType.Decide;
-            btnConfirm.Hide();
-            btnCancel = ABLoader.LoadMasterDuelGameObject("DuelButton").GetComponent<DuelButton>();
-            btnCancel.response.Add(-5);
-            btnCancel.hint = InterString.Get("取消");
-            btnCancel.type = ButtonType.Cancel;
-            btnCancel.Hide();
-
+        public void LoadDuelButton()
+        {
+            if(btnConfirm == null)
+            {
+                btnConfirm = ABLoader.LoadMasterDuelGameObject("DuelButton").GetComponent<DuelButton>();
+                btnConfirm.response.Add(-4);
+                btnConfirm.hint = InterString.Get("确认");
+                btnConfirm.type = ButtonType.Decide;
+                btnConfirm.Hide();
+            }
+            if(btnCancel == null)
+            {
+                btnCancel = ABLoader.LoadMasterDuelGameObject("DuelButton").GetComponent<DuelButton>();
+                btnCancel.response.Add(-5);
+                btnCancel.hint = InterString.Get("取消");
+                btnCancel.type = ButtonType.Cancel;
+                btnCancel.Hide();
+            }
         }
 
         protected override void ApplyShowArrangement(int preDepth)
@@ -238,7 +246,6 @@ namespace MDPro3.Servant
             {
                 Debug.Log($"ReturnTo: {returnServant}");
                 Program.instance.ShiftToServant(returnServant);
-
             }
             else
             {
@@ -589,8 +596,6 @@ namespace MDPro3.Servant
             {
                 if (manual)
                 {
-                    Debug.Log("mark7");
-
                     surrendered = false;
                     RoomServant.NeedSide = false;
                     RoomServant.SideWaitingObserver = false;

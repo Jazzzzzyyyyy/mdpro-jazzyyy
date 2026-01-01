@@ -41,19 +41,19 @@ namespace MDPro3.UI
         private void Start()
         {
             var collider = gameObject.AddComponent<BoxCollider>();
-            if ((p.location & (uint)CardLocation.Deck) > 0)
+            if (p.InLocation(CardLocation.Deck))
             {
                 highlight = ABLoader.LoadMasterDuelGameObject("eff_duel_highlight10");
                 transform.localEulerAngles = new Vector3(0, -19.5f, 0);
                 collider.size = new Vector3(8f, 1f, 10f);
             }
-            else if ((p.location & (uint)CardLocation.Extra) > 0)
+            else if (p.InLocation(CardLocation.Extra))
             {
                 highlight = ABLoader.LoadMasterDuelGameObject("eff_duel_highlight10");
                 transform.localEulerAngles = new Vector3(0, 19.5f, 0);
                 collider.size = new Vector3(8f, 1f, 10f);
             }
-            else if ((p.location & (uint)CardLocation.MonsterZone) > 0)
+            else if (p.InLocation(CardLocation.MonsterZone))
             {
                 highlight = ABLoader.LoadMasterDuelGameObject("eff_duel_highlight11");
                 collider.size = new Vector3(8f, 1f, 8f);
@@ -64,7 +64,7 @@ namespace MDPro3.UI
                 disable = new GameObject("Disable");
                 CreateSelectButton();
             }
-            else if ((p.location & (uint)CardLocation.SpellZone) > 0)
+            else if (p.InLocation(CardLocation.SpellZone))
             {
                 if (p.sequence == 5)
                 {
@@ -214,7 +214,26 @@ namespace MDPro3.UI
             }
             else
             {
-                if ((p.location & (uint)CardLocation.Onfield) > 0)
+                if (p.InLocation(CardLocation.SpellZone))
+                {
+                    if (p.InMyControl())
+                    {
+                        OcgCore.HideMyHandCard = true;
+                        OcgCore.HideOpHandCard = false;
+                    }
+                    else
+                    {
+                        OcgCore.HideOpHandCard = true;
+                        OcgCore.HideMyHandCard = false;
+                    }
+                }
+                else
+                {
+                    OcgCore.HideMyHandCard = false;
+                    OcgCore.HideOpHandCard = false;
+                }
+
+                if (p.InLocation(CardLocation.Onfield))
                 {
                     var card = FindCardInThisPlace();
                     if (card != null)
@@ -447,7 +466,7 @@ namespace MDPro3.UI
             selectCard.SetActive(false);
         }
 
-        public void HighlightThisZone(uint place, int min, bool needConfirm = false)
+        public GPS HighlightThisZone(uint place, int min)
         {
             for (var i = 0; i < min; i++)
             {
@@ -466,6 +485,7 @@ namespace MDPro3.UI
                         {
                             ShowSelectZoneHighlight();
                             selecting = true;
+                            return p;
                         }
                     }
                 }
@@ -478,10 +498,12 @@ namespace MDPro3.UI
                         {
                             ShowSelectZoneHighlight();
                             selecting = true;
+                            return p;
                         }
                     }
                 }
             }
+            return null;
         }
 
         public void ShowSelectZoneHighlight()

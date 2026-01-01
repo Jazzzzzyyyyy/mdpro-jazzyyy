@@ -1,4 +1,3 @@
-using DG.Tweening;
 using MDPro3.Net;
 using MDPro3.Duel.YGOSharp;
 using System;
@@ -13,8 +12,6 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using MDPro3.Servant;
 using MDPro3.UI.ServantUI;
-using MDPro3.Utility;
-using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 
 namespace MDPro3.UI
@@ -319,7 +316,9 @@ namespace MDPro3.UI
         public List<SelectionButton_CardInDeck> cards;
         public Deck Deck { get; set; }
 
-        protected string deckName;
+        protected string deckNameWithType;
+        protected string deckFileName;
+        protected string deckType;
         protected bool needSave;
 
         #endregion
@@ -329,12 +328,18 @@ namespace MDPro3.UI
         public void PrintDeck(Deck deck, string deckName, Condition condition)
         {
             Deck = deck;
-            this.deckName = deckName;
+            deckNameWithType = deckName;
+            if (Path.GetFileName(deckName) == deckName)
+                deckType = string.Empty;
+            else
+                deckType = Path.GetFileName(Path.GetDirectoryName(deckName));
+            deckFileName = Path.GetFileName(deckName);
+
             this.condition = condition;
 
             SetCondition(condition);
-            InputDeckName.text = deckName;
-            TextDeckName.text = deckName;
+            InputDeckName.text = deckFileName;
+            TextDeckName.text = deckFileName;
 
             _ = LoadDeckCaseAsync(deck.Case);
             StartCoroutine(PrintDeckAsync());
@@ -357,7 +362,7 @@ namespace MDPro3.UI
 
         public bool GetDirty()
         {
-            if (condition == Condition.Editable && InputDeckName.text != deckName)
+            if (condition == Condition.Editable && InputDeckName.text != deckFileName)
                 return true;
             return needSave;
         }
@@ -367,7 +372,7 @@ namespace MDPro3.UI
             if (condition == Condition.Editable)
                 return InputDeckName.text;
             else
-                return deckName;
+                return deckFileName;
         }
 
         public void SetCondition(Condition condition)
@@ -846,7 +851,7 @@ namespace MDPro3.UI
             if(condition != Condition.ChangeSide)
                 if (!CanEditCard()) return;
 
-            PrintDeck(Deck, deckName, condition);
+            PrintDeck(Deck, deckNameWithType, condition);
         }
 
         public void Sort()
@@ -941,8 +946,9 @@ namespace MDPro3.UI
 
             SetDirty(true);
 
-            deckName += " - " + InterString.Get("复制");
-            InputDeckName.text = deckName;
+            deckNameWithType += " - " + InterString.Get("复制");
+            deckFileName += " - " + InterString.Get("复制");
+            InputDeckName.text = deckFileName;
             Deck.deckId = string.Empty;
         }
 
@@ -950,7 +956,7 @@ namespace MDPro3.UI
         {
             if (!deckLoaded) return;
             if (!CanEditCard()) return;
-            if (GetDirty() || !File.Exists(Program.PATH_DECK + deckName + Program.EXPANSION_YDK))
+            if (GetDirty() || !File.Exists(Program.PATH_DECK + deckNameWithType + Program.EXPANSION_YDK))
             {
                 if(condition != Condition.ChangeSide)
                     MessageManager.Toast(InterString.Get("请先保存卡组"));
@@ -998,6 +1004,12 @@ namespace MDPro3.UI
             deck.Mate = Deck.Mate;
             deck.deckId = Deck.deckId;
             deck.userId = Deck.userId;
+
+            if(Path.GetFileName(deckNameWithType) == deckNameWithType)
+                deck.type = string.Empty;
+            else
+                deck.type = Path.GetDirectoryName(deckNameWithType);
+
             return deck;
         }
 
@@ -1279,18 +1291,20 @@ namespace MDPro3.UI
             return DeckLocation.All;
         }
 
-
         protected void DeckFileSave()
         {
             try
             {
                 var deckName = GetDeckName();
+                // TODO: 检查违法字符。
+                Deck.type = deckType;
                 Deck.Save(deckName, DateTime.UtcNow);
-                if (deckName != this.deckName)
-                    File.Delete(Program.PATH_DECK + this.deckName + Program.EXPANSION_YDK);
-                this.deckName = deckName;
+                if (deckName != deckFileName)
+                    File.Delete(Program.PATH_DECK + this.deckNameWithType + Program.EXPANSION_YDK);
+                deckFileName = deckName;
+                deckNameWithType = deckType == string.Empty ? string.Empty : $"/{deckType}" + deckName;
                 MessageManager.Toast(InterString.Get("本地卡组「[?]」已保存。", deckName));
-                Config.SetConfigDeck(deckName);
+                Config.SetConfigDeck(deckName, true);
                 SetDirty(false);
             }
             catch (Exception e)

@@ -24,7 +24,7 @@ namespace MDPro3.Servant
     public class OcgCore : Servant
     {
 
-        private DuelBGManager DuelBGManager => messageDispatcher.duel.duelBGManager;
+        public DuelBGManager DuelBGManager => messageDispatcher.duel.duelBGManager;
         public List<GameObject> allGameObjects => messageDispatcher.duel.duelBGManager.allGameObjects;
         public List<PlaceSelector> places => messageDispatcher.duel.duelBGManager.places;
         public static List<GameCard> materialCards = new();
@@ -164,6 +164,26 @@ namespace MDPro3.Servant
         public static float lastHandOffset;
         public static bool clickingHandCard;
         public static bool handCardDraged;
+        private static bool hideMyHandCard;
+        public static bool HideMyHandCard
+        {
+            get { return hideMyHandCard; }
+            set 
+            { 
+                hideMyHandCard = value;
+                Program.instance.ocgcore.RefreshMyHandCardPosition();
+            }
+        }
+        private static bool hideOpHandCard;
+        public static bool HideOpHandCard
+        {
+            get { return hideOpHandCard; }
+            set
+            {
+                hideOpHandCard = value;
+                Program.instance.ocgcore.RefreshOpHandCardPosition();
+            }
+        }
 
         #endregion
 
@@ -292,12 +312,11 @@ namespace MDPro3.Servant
 
             if (GetMyHandCount() > 10)
             {
-                if (UserInput.HoverObject != null
+                if (UserInput.MouseLeftDown
+                    && UserInput.HoverObject != null
                     && UserInput.HoverObject.name == "CardModel"
                     && UserInput.HoverObject.GetComponent<GameCardMono>().cookieCard.p.controller == 0
-                    && (UserInput.HoverObject.GetComponent<GameCardMono>().cookieCard.p.location & (uint)CardLocation.Hand) > 0
-                    && UserInput.MouseLeftDown
-                    )
+                    && (UserInput.HoverObject.GetComponent<GameCardMono>().cookieCard.p.location & (uint)CardLocation.Hand) > 0)
                 {
                     clickInPosition = UserInput.MousePos.x;
                     clickingHandCard = true;
@@ -721,13 +740,13 @@ namespace MDPro3.Servant
 
         public void StocMessage_Error(string error)
         {
-            StartCoroutine(ShowErrorMessageAsync(error));
+            _ = ShowErrorMessageAsync(error);
         }
         
-        private IEnumerator ShowErrorMessageAsync(string error)
+        private async UniTask ShowErrorMessageAsync(string error)
         {
-            while (servantUI == null)
-                yield return null;
+            await UniTask.WaitWhile(() => servantUI == null);
+            UniTask.ReturnToMainThread();
             GetUI<OcgCoreUI>().DuelErrorLog.Show(error);
         }
 
@@ -920,7 +939,7 @@ namespace MDPro3.Servant
                     currentMessage = (GameMessage)currentPackage.Function;
 
                     //if (currentMessage != GameMessage.UpdateData)
-                        //Debug.Log($"GameMessage: {currentMessage}");
+                    //    Debug.Log($"GameMessage: {currentMessage}");
 
                     try
                     {
@@ -1355,6 +1374,49 @@ namespace MDPro3.Servant
             return 0;
         }
 
+        public int GetUpdateDataIdByGameCard(GameCard card)
+        {
+            for (int i = 0; i < packages.Count; i++)
+            {
+                if ((GameMessage)packages[i].Function == GameMessage.UpdateData)
+                {
+                    var reader = packages[i].Data.reader;
+                    reader.BaseStream.Seek(0, 0);
+                    var player = LocalPlayer(reader.ReadChar());
+                    var location = reader.ReadChar();
+                    if (player != card.p.controller)
+                        continue;
+                    if((location & card.p.location) == 0)
+                        continue;
+                    while (true)
+                    {
+                        var len = reader.ReadInt32();
+                        if (len == 4) continue;
+                        var pos = reader.BaseStream.Position;
+
+                        var flag = reader.ReadInt32();
+                        var code = 0;
+                        if((flag & (int)Query.Code) != 0)
+                            code = reader.ReadInt32();
+                        if ((flag & (int)Query.Position) != 0)
+                        {
+                            var gps = reader.ReadGPS();
+                            var cardToRefresh = Program.instance.ocgcore.GCS_Get(gps);
+                            if (cardToRefresh != null && cardToRefresh == card)
+                                return code;
+                            else
+                            {
+                                reader.BaseStream.Position = pos + len - 4;
+                                continue;
+                            }
+                        }
+                    }
+                }
+            }
+
+            return 0;
+        }
+
         #endregion
 
         #region Practicalize
@@ -1621,6 +1683,7 @@ namespace MDPro3.Servant
 
         private void RefreshHandCardPositionInstant()
         {
+            hideMyHandCard = false;
             if (showing)
                 foreach (var card in cards)
                     card.SetHandDefault();
@@ -1632,6 +1695,23 @@ namespace MDPro3.Servant
                 foreach (var card in cards)
                     card.SetHandToDefault();
         }
+
+        public void RefreshMyHandCardPosition()
+        {
+            if (showing)
+                foreach (var card in cards)
+                    if(card.p.InMyControl())
+                        card.SetHandToDefault();
+        }
+
+        public void RefreshOpHandCardPosition()
+        {
+            if (showing)
+                foreach (var card in cards)
+                    if (!card.p.InMyControl())
+                        card.SetHandToDefault();
+        }
+
 
         string fieldHint;
         int fieldMin;
@@ -1852,13 +1932,6 @@ namespace MDPro3.Servant
             DuelBGManager.UpdateExDeckTop(controller);
         }
 
-        public void RefreshBgState()
-        {
-            if (DuelBGManager == null)
-                return;
-            DuelBGManager.RefreshBgState();
-        }
-
         public void SetBgTimeScale(float timeScale)
         {
             if (DuelBGManager == null)
@@ -1946,79 +2019,6 @@ namespace MDPro3.Servant
         public void SetDeckModelActive(ElementObjectManager deck, bool active)
         {
             deck.GetElement("CardShuffleTop").SetActive(active);
-        }
-
-
-        bool CheckChain()
-        {
-            bool config = true;
-            if (condition == Condition.Duel && Config.Get("DuelChain", "1") == "0")
-                config = false;
-            else if (condition == Condition.Watch && Config.Get("WatchChain", "1") == "0")
-                config = false;
-            else if (condition == Condition.Replay && Config.Get("ReplayChain", "1") == "0")
-                config = false;
-            return config;
-        }
-
-        void ChangeChainNumber(SpriteRenderer digit, SpriteRenderer one, SpriteRenderer ten, int number)
-        {
-            if (number < 10)
-            {
-                one.gameObject.SetActive(false);
-                ten.gameObject.SetActive(false);
-                digit.sprite = TextureManager.container.GetChainNumSprite(number);
-            }
-            else
-            {
-                digit.gameObject.SetActive(false);
-                one.sprite = TextureManager.container.GetChainNumSprite(number % 10);
-                ten.sprite = TextureManager.container.GetChainNumSprite((number / 10) % 10);
-            }
-        }
-
-
-        private void PlayCommonSpecialWin(int[] codes)
-        {
-            var count = codes.Length;
-            var go = ABLoader.LoadFromFolder<ElementObjectManager>("MasterDuel/Timeline/SpecialWin/SpecialWinCommonCard0" + count, false, true);
-            allGameObjects.Add(go);
-            var mner = go.GetComponent<ElementObjectManager>();
-            foreach (var child in mner.transform.GetComponentsInChildren<Transform>(true))
-                if (child.name == "White")
-                {
-                    //var newWhite = Instantiate(child.gameObject);
-                    //newWhite.transform.SetParent(child.transform, false);
-                    //newWhite.transform.localScale = Vector3.one;
-                    //newWhite.GetComponent<SpriteRenderer>().color = Color.clear;
-                    child.gameObject.SetActive(false);
-                }
-            _ = Program.instance.texture_.LoadDummyCard(mner.GetElement<ElementObjectManager>("DummyCard01"), codes[0], 0, true);
-            mner.GetElement<ElementObjectManager>("DummyCard01").GetElement<Renderer>("DummyCardModel_front").material.renderQueue = 4000;
-            if (count > 1)
-                _ = Program.instance.texture_.LoadDummyCard(mner.GetElement<ElementObjectManager>("DummyCard02"), codes[1], 0, true);
-            if (count > 2)
-                _ = Program.instance.texture_.LoadDummyCard(mner.GetElement<ElementObjectManager>("DummyCard03"), codes[2], 0, true);
-            if (count > 3)
-                _ = Program.instance.texture_.LoadDummyCard(mner.GetElement<ElementObjectManager>("DummyCard04"), codes[3], 0, true);
-            if (count > 4)
-                _ = Program.instance.texture_.LoadDummyCard(mner.GetElement<ElementObjectManager>("DummyCard05"), codes[4], 0, true);
-            mner.GetComponent<PlayableDirector>().Play();
-            var mono = mner.gameObject.AddComponent<DoWhenPlayableDirectorStop>();
-            mono.action = () =>
-            {
-                Destroy(go);
-            };
-        }
-
-        private ElementObjectManager PlaySpecialWin(string path)
-        {
-            var go = ABLoader.LoadFromFolder<ElementObjectManager>("MasterDuel/Timeline/SpecialWin/" + path, false, true);
-            allGameObjects.Add(go);
-            ElementObjectManager manager = go.GetComponent<ElementObjectManager>();
-            var mono = go.AddComponent<DoWhenPlayableDirectorStop>();
-            mono.action = () => { Destroy(go); };
-            return manager;
         }
 
         #endregion

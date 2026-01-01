@@ -93,7 +93,8 @@ namespace MDPro3
                 renderer.material = mat;
         }
 
-        public async UniTask LoadDummyCard(ElementObjectManager manager, int code, uint player, bool active = false)
+        public async UniTask LoadDummyCard(ElementObjectManager manager, int code, uint player, bool active = false, 
+            Renderer attachRenderer = null, Renderer attachRenderer2 = null)
         {
             if (active)
                 manager.gameObject.SetActive(false);
@@ -102,6 +103,10 @@ namespace MDPro3
             var renderer = manager.GetElement<Renderer>("DummyCardModel_front");
             renderer.material = MaterialLoader.GetCardMaterial(code, true);
             renderer.material.mainTexture = await CardImageLoader.LoadCardAsync(code, false, manager.destroyCancellationToken);
+            if(attachRenderer != null)
+                attachRenderer.material.mainTexture = renderer.material.mainTexture;
+            if (attachRenderer2 != null)
+                attachRenderer2.material.mainTexture = renderer.material.mainTexture;
             if (active)
                 manager.gameObject.SetActive(true);
         }
@@ -204,25 +209,6 @@ namespace MDPro3
                 return container.locationSearch;
             else
                 return container.typeNone;
-        }
-
-        public static Sprite GetCardAttributeIcon(int attribute, int code, bool render = false)
-        {
-            bool rushDuel = CardRenderer.NeedRushDuelStyle(code);
-            if ((attribute & (uint)CardAttribute.Light) > 0)
-                return rushDuel && render ? container.rd_Attribute_Light : container.attributeLight;
-            else if ((attribute & (uint)CardAttribute.Dark) > 0)
-                return rushDuel && render ? container.rd_Attribute_Dark : container.attributeDark;
-            else if ((attribute & (uint)CardAttribute.Water) > 0)
-                return rushDuel && render ? container.rd_Attribute_Water : container.attributeWater;
-            else if ((attribute & (uint)CardAttribute.Fire) > 0)
-                return rushDuel && render ? container.rd_Attribute_Fire : container.attributeFire;
-            else if ((attribute & (uint)CardAttribute.Earth) > 0)
-                return rushDuel && render ? container.rd_Attribute_Earth : container.attributeEarth;
-            else if ((attribute & (uint)CardAttribute.Wind) > 0)
-                return rushDuel && render ? container.rd_Attribute_Wind : container.attributeWind;
-            else
-                return rushDuel && render ? container.rd_Attribute_Divine : container.attributeDivine;
         }
 
         public static Sprite GetCardRaceIcon(int race)

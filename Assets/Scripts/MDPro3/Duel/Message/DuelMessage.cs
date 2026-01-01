@@ -711,9 +711,7 @@ namespace MDPro3.Duel
             var reason = reader.ReadUInt32();
 
             var card = Core.GCS_Get(from);
-            if(card != null)
-                card.CacheData();
-            else
+            if(card == null)
             {
                 //DebugNoCard();
                 card = Core.GCS_Create(from);
@@ -1070,7 +1068,6 @@ namespace MDPro3.Duel
             cardsInChain.Add(card);
             codesInChain.Add(code);
             controllerInChain.Add(gps.controller);
-            card.AnimationActivate();
             ES_hint = InterString.Get("「[?]」被发动时", card.GetData().Name);
             if (gps.InMyControl())
             {
@@ -1084,7 +1081,7 @@ namespace MDPro3.Duel
             }
             if(Core.GetAutoInfo())
                 Core.GetUI<OcgCoreUI>().CardDescription.Show(card, null);
-            await UniTask.WaitForSeconds(1f);
+            await card.AnimationActivate().WaitAsync();
         }
 
         protected override async UniTask GameMessage_Chained(BinaryReader reader)
@@ -3204,8 +3201,24 @@ namespace MDPro3.Duel
                 min = 1;
             ES_min = min;
             var filter = ~reader.ReadUInt32();
+            bool haveMySpellZone = false;
+            bool haveOpSpellZone = false;
             foreach (var place in duelBGManager.places)
-                place.HighlightThisZone(filter, min);
+            {
+                var p = place.HighlightThisZone(filter, min);
+                if(p != null)
+                    if (p.InLocation(CardLocation.SpellZone))
+                    {
+                        if (p.InMyControl())
+                            haveMySpellZone = true;
+                        else
+                            haveOpSpellZone = true;
+                    }
+            }
+            if (haveMySpellZone)
+                HideMyHandCard = true;
+            else if (haveOpSpellZone)
+                HideOpHandCard = true;
 
             if (currentMessage == GameMessage.SelectPlace)
             {

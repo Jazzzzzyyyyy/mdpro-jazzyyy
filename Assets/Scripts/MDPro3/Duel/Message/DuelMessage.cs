@@ -1318,6 +1318,20 @@ namespace MDPro3.Duel
             var isFinalAttack = duelBGManager.IsFinalBlow();
             duelBGManager.HideAttackLine();
             duelBGManager.HideDuelFinalBlowText();
+            if (!isFinalAttack&&attackCard!=null&&attackedCard!=null&&attackedCard.p.InPosition(CardPosition.Attack))
+            {
+                var diff = attackCard.GetData().Attack - attackedCard.GetData().Attack;
+                if (attackCard.p.InMyControl())
+                {
+                    if (diff >= life1)
+                        isFinalAttack = true;
+                }
+                else
+                {
+                    if (diff >= life0)
+                        isFinalAttack = true;
+                }
+            }
 
             if (isFinalAttack && (await duelBGManager.NeedSpecialFinalAttackAsync(attackCard, attackedPosition)))
                 return;

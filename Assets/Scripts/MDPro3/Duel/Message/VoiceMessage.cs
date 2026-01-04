@@ -34,6 +34,7 @@ namespace MDPro3.Duel
         private bool lastVoiceIsRelease;
 
         private readonly List<VoiceData> voiceData = new();
+        private readonly List<VoiceData> aloneVoiceData = new();
 
         #endregion
 
@@ -76,12 +77,14 @@ namespace MDPro3.Duel
                         var clip = await AudioManager.LoadAudioFileUniAsync(paths[i][j], AudioType.OGGVORBIS);
                         clips[i].Add(clip);
                     }
-                    catch (Exception ex) 
+                    catch (Exception ex)
                     {
                         Debug.LogException(ex);
                     }
                 }
             }
+
+
 
             for (int i = 0; i < clips.Length; i++)
             {
@@ -130,13 +133,89 @@ namespace MDPro3.Duel
                         await UniTask.WaitForSeconds(clips[i][j].length);
                 }
             }
-        }
 
+
+        }
+        private async UniTask PlayAloneVoiceAsync(List<VoiceData> vdsource)
+        {
+            var voiceData = new List<VoiceData>(vdsource);
+            var paths = GetVoicePaths(voiceData);
+            var clips = new List<AudioClip>[paths.Length];
+            for (int i = 0; i < clips.Length; i++)
+                clips[i] = new List<AudioClip>();
+
+            for (int i = 0; i < paths.Length; i++)
+            {
+                for (int j = 0; j < paths[i].Count; j++)
+                {
+                    try
+                    {
+                        var clip = await AudioManager.LoadAudioFileUniAsync(paths[i][j], AudioType.OGGVORBIS);
+                        clips[i].Add(clip);
+                    }
+                    catch (Exception ex)
+                    {
+                        Debug.LogException(ex);
+                    }
+                }
+            }
+
+
+
+            for (int i = 0; i < clips.Length; i++)
+            {
+                for (int j = 0; j < clips[i].Count; j++)
+                {
+                    if (j == 0)
+                        await UniTask.WaitForSeconds(voiceData[i].delay);
+
+                    var line = GetLine(Path.GetFileNameWithoutExtension(paths[i][j]), voiceData[i].isHero);
+                    if (line != null)
+                    {
+                        var item = ABLoader.LoadMasterDuelGameObject(voiceData[i].isHero ? "DuelChatItemMe" : "DuelChatItemOp");
+
+                        item.transform.SetParent(Core.transform.GetChild(0), false);
+                        var handler = item.GetComponent<ChatItemHandler>();
+                        handler.text = line.text;
+
+                        if (clips[i][j] == null)
+                        {
+                            Debug.LogError("Voice File " + paths[i][j] + " not Found!");
+                            return;
+                        }
+
+                        handler.time = clips[i][j].length;
+                        handler.frame = line.frame;
+                        if (voiceData[i].isHero)
+                        {
+                            if (Core.duelChat0 != null)
+                                Core.duelChat0.BeGray();
+                            Core.duelChat0 = handler;
+                        }
+                        else
+                        {
+                            if (Core.duelChat1 != null)
+                                Core.duelChat1.BeGray();
+                            Core.duelChat1 = handler;
+                        }
+
+                        Core.SetCharacterFace(voiceData[i].isHero ? heroString : rivalString, line.face, voiceData[i].isHero, 0f);
+                        Core.SetCharacterFace(voiceData[i].isHero ? heroString : rivalString, 1, voiceData[i].isHero, clips[i][j].length - 0.1f);
+                    }
+
+                    AudioManager.PlayVoice(clips[i][j]);
+
+                    if (voiceData[i].wait)
+                        await UniTask.WaitForSeconds(clips[i][j].length);
+                }
+            }
+            
+        
+        }
         private bool NeedVoice()
         {
             return Config.GetBool(OcgCore.condition + "Voice", false);
         }
-
         private static bool DamageIsBig(int damage)
         {
             if (damage >= 2000)
@@ -178,13 +257,44 @@ namespace MDPro3.Duel
 
             await base.Process(p);
 
-            if (voiceData.Count == 0)
-                return;
+            var needrecacc = OcgCore.Accing&&(voiceData.Count>0||aloneVoiceData.Count>0);
 
-            var voiceTask = PlayVoiceAsync();
-            var clickTask = UniTask.WaitUntil(() => UserInput.MouseLeftDown);
+            if (voiceData.Count > 0)
+            {
 
-            await UniTask.WhenAny(voiceTask, clickTask);
+                Core.GetUI<MDPro3.UI.ServantUI.OcgCoreUI>().OnNor();
+
+                var voiceTask = PlayVoiceAsync();
+
+                var clickTask = UniTask.WaitUntil(() => UserInput.MouseLeftDown);
+                await UniTask.WhenAny(voiceTask, clickTask);
+
+                if (!OcgCore.Accing && needrecacc)
+                {
+                    Core.GetUI<MDPro3.UI.ServantUI.OcgCoreUI>().OnAcc();
+                }
+            }
+            
+            if(aloneVoiceData.Count > 0)
+            {
+                _ = UniTask.Create(async () =>
+                {
+                    Core.GetUI<MDPro3.UI.ServantUI.OcgCoreUI>().OnNor();
+                    var voiceTask = PlayAloneVoiceAsync(aloneVoiceData);
+                    var clickTask = UniTask.WaitUntil(() => UserInput.MouseLeftDown);
+
+                    aloneVoiceData.Clear();
+                    await UniTask.WhenAny(voiceTask, clickTask);
+
+                    if (!OcgCore.Accing && needrecacc)
+                    {
+                        Core.GetUI<MDPro3.UI.ServantUI.OcgCoreUI>().OnAcc();
+                    }
+                });
+            }
+
+
+
         }
 
         protected override UniTask GameMessage_Start(BinaryReader reader)
@@ -350,6 +460,19 @@ namespace MDPro3.Duel
             if (NeedBeforeCardEffect(gps.InMyControl()))
                 voiceData.Add(GetBeforeCardEffectData(target, gps.InMyControl()));
 
+            var card = Core.GCS_Get(gps);
+            if (card != null)
+            {
+                var spdata = GetVoiceByCard(target, target.MainMagicTrap, card.GetData().Id, 0, gps.InMyControl());
+                if (spdata.name != string.Empty)
+                {
+                    ignoreNextChaining = true;
+                    voiceData.Add(spdata);
+                    return UniTask.CompletedTask;
+                }
+            }
+            
+
             var data = new VoiceData();
             data.name = GetVoiceBySubCategory(target.CardEffect, (int)CardEffectSub.Reverse, (int)CardEffectSub.Reverse, 0);
             data.num = GetVoiceNum(target, data.name);
@@ -366,6 +489,8 @@ namespace MDPro3.Duel
             data2.wait = true;
             data2.delay = 0f;
             voiceData.Add(data2);
+
+          
 
             ignoreNextChaining = true;
 
@@ -397,6 +522,7 @@ namespace MDPro3.Duel
             var patternIndex = 0;
             var fromHand = false;
             var isMe = to.InMyControl();
+            var advance = lastVoiceIsRelease;
 
             if ((reason & (uint)CardReason.RELEASE) > 0
                 && card.GetData().HasType(CardType.Monster))
@@ -407,6 +533,7 @@ namespace MDPro3.Duel
                 subCategory = (int)SummonSub.Release;
                 subInCase = subCategory;
                 lastVoiceIsRelease = true;
+                
             }
             else
                 lastVoiceIsRelease = false;
@@ -416,6 +543,10 @@ namespace MDPro3.Duel
                 code = nextPack.Data.reader.ReadInt32();
                 category = (int)Category.Summon;
                 subCategory = (int)SummonSub.Normal;
+                if (advance || OcgCore.materialCards.Count > 0)
+                {
+                    subCategory = (int)SummonSub.Advance;
+                }
 
                 isMe = from.controller == 0;
                 var targetDataT = isMe ? heroVoices : rivalVoices;
@@ -672,9 +803,22 @@ namespace MDPro3.Duel
                 data.name = Tools.GetRandomDictionaryElement(targetData.Damage.rawKvp).Value.shortName;
             data.num = GetVoiceNum(targetData, data.name);
             data.isHero = player == 0;
-            data.wait = false;
+            data.wait = true;
             data.delay = 0f;
-            voiceData.Add(data);
+            aloneVoiceData.Add(data);
+
+            var data2 = new VoiceData();
+            if(DamageIsBig(value))
+                data2.name = Tools.GetRandomDictionaryElement(targetData.AfterBigDamage.rawKvp).Value.shortName;
+            else
+                data2.name = Tools.GetRandomDictionaryElement(targetData.AfterDamage.rawKvp).Value.shortName;
+            data2.num = GetVoiceNum(targetData, data2.name);
+            data2.isHero = player == 0;
+            data2.wait = true;
+            data2.delay = 0.26f;
+            aloneVoiceData.Add(data2);
+
+            // isInstantMessage = true;
 
             return UniTask.CompletedTask;
         }
@@ -700,9 +844,22 @@ namespace MDPro3.Duel
             data.name = Tools.GetRandomDictionaryElement(targetData.CostDamage.rawKvp).Value.shortName;
             data.num = GetVoiceNum(targetData, data.name);
             data.isHero = player == 0;
-            data.wait = false;
+            data.wait = true;
             data.delay = 0f;
-            voiceData.Add(data);
+            aloneVoiceData.Add(data);
+
+            var data2 = new VoiceData();
+            if(DamageIsBig(value))
+                data2.name = Tools.GetRandomDictionaryElement(targetData.AfterBigDamage.rawKvp).Value.shortName;
+            else
+                data2.name = Tools.GetRandomDictionaryElement(targetData.AfterDamage.rawKvp).Value.shortName;            data2.num = GetVoiceNum(targetData, data2.name);
+            data2.num = GetVoiceNum(targetData, data2.name);
+            data2.isHero = player == 0;
+            data2.wait = true;
+            data2.delay = 0.26f;
+            aloneVoiceData.Add(data2);
+
+            // isInstantMessage = true;
 
             return UniTask.CompletedTask;
         }
@@ -747,9 +904,22 @@ namespace MDPro3.Duel
                 data.name = Tools.GetRandomDictionaryElement(targetData.Damage.rawKvp).Value.shortName;
             data.num = GetVoiceNum(targetData, data.name);
             data.isHero = player == 0;
-            data.wait = false;
+            data.wait = true;
             data.delay = 0f;
-            voiceData.Add(data);
+            aloneVoiceData.Add(data);
+
+            var data2 = new VoiceData();
+            if(DamageIsBig(diff))
+                data2.name = Tools.GetRandomDictionaryElement(targetData.AfterBigDamage.rawKvp).Value.shortName;
+            else
+                data2.name = Tools.GetRandomDictionaryElement(targetData.AfterDamage.rawKvp).Value.shortName;            data2.num = GetVoiceNum(targetData, data2.name);
+            data2.num = GetVoiceNum(targetData, data2.name);
+            data2.isHero = player == 0;
+            data2.wait = true;
+            data2.delay = 0.26f;
+            aloneVoiceData.Add(data2);
+
+            // isInstantMessage = true;
 
             return UniTask.CompletedTask;
         }
@@ -770,7 +940,7 @@ namespace MDPro3.Duel
             var value = attackCard.GetData().Attack;
             var attackedCard = Core.GCS_Get(to);
 
-            if(attackedCard != null)
+            if (attackedCard != null)
             {
                 directAttack = false;
                 if (attackedCard.p.InPosition(CardPosition.Attack))
@@ -778,9 +948,11 @@ namespace MDPro3.Duel
                 else
                     value = 0;
             }
+            
 
             bool finalBlow = value >= (from.InMyControl() ? life1 : life0);
             var targetData = from.InMyControl() ? heroVoices : rivalVoices;
+
 
             var data = new VoiceData();
             data.name = Tools.GetRandomDictionaryElement(finalBlow ? targetData.BeforeAttackFinish.rawKvp : targetData.BeforeAttackNormal.rawKvp).Value.shortName;
@@ -790,13 +962,35 @@ namespace MDPro3.Duel
             data.delay = 0f;
             voiceData.Add(data);
 
-            var data2 = new VoiceData();
-            data2.name = Tools.GetRandomDictionaryElement(directAttack ? targetData.DirectAttack.rawKvp : targetData.Attack.rawKvp).Value.shortName;
-            data2.num = GetVoiceNum(targetData, data2.name);
-            data2.isHero = data.isHero;
-            data2.wait = true;
-            data2.delay = 0f;
-            voiceData.Add(data2);
+            //edit-->
+            bool iscommonvoice = false;
+
+            if(attackCard != null)
+            {
+                var mainmonsterdata = GetVoiceByCard(targetData, targetData.MainMonsterAttack, attackCard.GetData().Id, 0, from.InMyControl());
+                if (mainmonsterdata.name != string.Empty)
+                {
+                    voiceData.Add(mainmonsterdata);
+                    iscommonvoice = true;
+                }
+
+            }
+
+
+            if (iscommonvoice==false)
+            {
+                
+
+                var data2 = new VoiceData();
+                data2.name = Tools.GetRandomDictionaryElement(directAttack ? targetData.DirectAttack.rawKvp : targetData.Attack.rawKvp).Value.shortName;
+                data2.num = GetVoiceNum(targetData, data2.name);
+                data2.isHero = data.isHero;
+                data2.wait = true;
+                data2.delay = 0f;
+                voiceData.Add(data2);
+            }
+
+            
 
             return UniTask.CompletedTask;
         }

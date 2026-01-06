@@ -452,13 +452,16 @@ namespace MDPro3.ControllerSupport
         private int GetTotalCardsForRegion(DeckRegion region)
         {
             var deckEditor = Program.instance?.deckEditor;
-            if (deckEditor == null || DeckEditor.Deck == null) return 0;
+            if (deckEditor == null) return 0;
+            
+            var deck = DeckEditor.Deck;
+            if (deck == null) return 0;
 
             return region switch
             {
-                DeckRegion.MainDeck => DeckEditor.Deck.Main.Count,
-                DeckRegion.ExtraDeck => DeckEditor.Deck.Extra.Count,
-                DeckRegion.SideDeck => DeckEditor.Deck.Side.Count,
+                DeckRegion.MainDeck => deck.Main?.Count ?? 0,
+                DeckRegion.ExtraDeck => deck.Extra?.Count ?? 0,
+                DeckRegion.SideDeck => deck.Side?.Count ?? 0,
                 DeckRegion.CardCollection => GetCollectionCardCount(),
                 _ => 0
             };

@@ -516,9 +516,11 @@ namespace MDPro3.ControllerSupport
             
             if (ocgCore != null)
             {
-                foreach (var card in OcgCore.cards)
+                // Create a snapshot copy to avoid collection modification during enumeration
+                var cardsCopy = new List<GameCard>(OcgCore.cards);
+                foreach (var card in cardsCopy)
                 {
-                    if (card.p.controller == 0 && (card.p.location & (uint)CardLocation.Hand) > 0)
+                    if (card != null && card.p.controller == 0 && (card.p.location & (uint)CardLocation.Hand) > 0)
                     {
                         result.Add(card);
                     }
@@ -545,9 +547,12 @@ namespace MDPro3.ControllerSupport
                 sequence = col == 1 ? 5u : 6u; // Extra monster zone sequences
             }
 
-            foreach (var card in OcgCore.cards)
+            // Create a snapshot copy to avoid collection modification during enumeration
+            var cardsCopy = new List<GameCard>(OcgCore.cards);
+            foreach (var card in cardsCopy)
             {
-                if (card.p.controller == controller &&
+                if (card != null &&
+                    card.p.controller == controller &&
                     card.p.location == location &&
                     card.p.sequence == sequence)
                 {

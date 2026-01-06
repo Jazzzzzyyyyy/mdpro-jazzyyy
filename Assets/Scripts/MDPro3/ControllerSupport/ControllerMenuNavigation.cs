@@ -49,6 +49,29 @@ namespace MDPro3.ControllerSupport
             ControllerManager.OnControllerConnected -= OnControllerConnected;
             ControllerManager.OnControllerDisconnected -= OnControllerDisconnected;
             ControllerManager.OnGameActionTriggered -= OnGameAction;
+            
+            // Clean up to prevent memory leaks
+            CleanupOriginalScales();
+        }
+
+        /// <summary>
+        /// Clean up the originalScales dictionary to prevent memory leaks
+        /// </summary>
+        private void CleanupOriginalScales()
+        {
+            // Remove entries for destroyed selectables
+            var keysToRemove = new List<Selectable>();
+            foreach (var kvp in originalScales)
+            {
+                if (kvp.Key == null)
+                {
+                    keysToRemove.Add(kvp.Key);
+                }
+            }
+            foreach (var key in keysToRemove)
+            {
+                originalScales.Remove(key);
+            }
         }
 
         private void Update()
@@ -65,7 +88,17 @@ namespace MDPro3.ControllerSupport
                     OnSelectionChanged(selectable);
                 }
             }
+            
+            // Periodic cleanup of destroyed selectables (every 5 seconds)
+            cleanupTimer += Time.unscaledDeltaTime;
+            if (cleanupTimer > 5f)
+            {
+                cleanupTimer = 0f;
+                CleanupOriginalScales();
+            }
         }
+        
+        private float cleanupTimer;
 
         private void OnControllerConnected(ControllerType type)
         {

@@ -32,9 +32,20 @@ namespace MDPro3.ControllerSupport
 
         private static void EnsureConfigFolder()
         {
-            var path = Path.Combine(Application.dataPath, "..", CONFIG_FOLDER);
+            var path = GetConfigFolderPath();
             if (!Directory.Exists(path))
                 Directory.CreateDirectory(path);
+        }
+
+        /// <summary>
+        /// Gets the appropriate config folder path based on the platform.
+        /// Uses the same Data folder structure as MDPro3.
+        /// </summary>
+        private static string GetConfigFolderPath()
+        {
+            // MDPro3 uses a relative Data folder from the executable location
+            // This is consistent with how Config.cs handles the config.conf file
+            return CONFIG_FOLDER;
         }
 
         private static void LoadDefaultProfiles()
@@ -267,7 +278,7 @@ namespace MDPro3.ControllerSupport
 
         private static string GetConfigPath()
         {
-            return Path.Combine(Application.dataPath, "..", CONFIG_FOLDER, DEFAULT_CONFIG_FILE);
+            return Path.Combine(GetConfigFolderPath(), DEFAULT_CONFIG_FILE);
         }
 
         /// <summary>

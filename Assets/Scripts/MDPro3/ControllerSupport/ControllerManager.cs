@@ -285,7 +285,7 @@ namespace MDPro3.ControllerSupport
         {
             if (currentGamepad == null) return;
             
-            if (!Config.GetBool("Rumble", true)) return;
+            if (!MDPro3.Config.GetBool("Rumble", true)) return;
 
             currentGamepad.SetMotorSpeeds(lowFrequency, highFrequency);
             StartCoroutine(StopHapticAfterDelay(duration));

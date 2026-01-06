@@ -1,0 +1,110 @@
+{
+  "ProfileName": "PlayStation",
+  "ControllerType": "PlayStation",
+  "Description": "PlayStation Controller Layout - DualShock/DualSense button mapping",
+  "ButtonMappings": {
+    "buttonSouth": {
+      "action": "Confirm",
+      "displayName": "×",
+      "description": "Confirm selection, Add card to deck"
+    },
+    "buttonEast": {
+      "action": "Cancel",
+      "displayName": "○",
+      "description": "Cancel, Go back, Remove card"
+    },
+    "buttonWest": {
+      "action": "Secondary",
+      "displayName": "□",
+      "description": "Secondary action, Show filters"
+    },
+    "buttonNorth": {
+      "action": "Tertiary",
+      "displayName": "△",
+      "description": "Search, Sort, Show card info"
+    },
+    "leftShoulder": {
+      "action": "PreviousTab",
+      "displayName": "L1",
+      "description": "Previous tab/category"
+    },
+    "rightShoulder": {
+      "action": "NextTab",
+      "displayName": "R1",
+      "description": "Next tab/category"
+    },
+    "leftTrigger": {
+      "action": "ZoomOut",
+      "displayName": "L2",
+      "description": "Zoom out, Show card action menu"
+    },
+    "rightTrigger": {
+      "action": "ZoomIn",
+      "displayName": "R2",
+      "description": "Zoom in, Switch between regions"
+    },
+    "select": {
+      "action": "Menu",
+      "displayName": "Share/Create",
+      "description": "Save deck, Quick actions"
+    },
+    "start": {
+      "action": "Pause",
+      "displayName": "Options",
+      "description": "Open menu, Show sub-menu"
+    },
+    "leftStickPress": {
+      "action": "ToggleView",
+      "displayName": "L3",
+      "description": "Toggle view mode"
+    },
+    "rightStickPress": {
+      "action": "CenterCamera",
+      "displayName": "R3",
+      "description": "Center camera, Switch collection tab"
+    },
+    "dpadUp": {
+      "action": "NavigateUp",
+      "displayName": "D-Pad Up",
+      "description": "Navigate up"
+    },
+    "dpadDown": {
+      "action": "NavigateDown",
+      "displayName": "D-Pad Down",
+      "description": "Navigate down"
+    },
+    "dpadLeft": {
+      "action": "NavigateLeft",
+      "displayName": "D-Pad Left",
+      "description": "Navigate left"
+    },
+    "dpadRight": {
+      "action": "NavigateRight",
+      "displayName": "D-Pad Right",
+      "description": "Navigate right"
+    }
+  },
+  "NavigationSettings": {
+    "DeadZone": 0.3,
+    "RepeatDelay": 0.4,
+    "RepeatRate": 0.15,
+    "AnalogSensitivity": 1.0
+  },
+  "DuelControls": {
+    "ShowGraveyard": "L2 + D-Pad Down",
+    "ShowBanished": "L2 + D-Pad Up",
+    "ShowExtraDeck": "L2 + D-Pad Left",
+    "EndPhase": "Options",
+    "ViewHand": "L2 + D-Pad Right",
+    "ToggleTiming": "Share"
+  },
+  "DeckBuilderControls": {
+    "AddCard": "×",
+    "RemoveCard": "○",
+    "ShowFilters": "□",
+    "Search": "△",
+    "SwitchToCollection": "R2",
+    "SwitchToDeck": "R2",
+    "ShowCardMenu": "L2"
+  }
+}

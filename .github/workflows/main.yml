@@ -1,0 +1,62 @@
+name: Build Mac Release
+
+on:
+  push: 
+    branches: [ master ]
+    tags: [ 'v*' ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: macos-latest
+    
+    steps:
+    - name: Checkout main repo
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+    
+    - name:  Checkout external dependencies
+      run: |
+        mkdir -p external
+        cd external
+        
+        # Clone required repos with sparse checkout to save space
+        git clone --depth 1 --filter=blob:none --sparse https://code.mycard.moe/sherry_chaos/mdpro3-assetbundles.git platforms
+        cd platforms && git sparse-checkout set Platforms && cd ..
+        
+        git clone --depth 1 --filter=blob:none --sparse https://code.mycard.moe/mycard/hd-arts.git hd-arts
+        cd hd-arts && git sparse-checkout set Picture/Art && cd ..
+        
+        git clone --depth 1 --filter=blob:none --sparse https://code.mycard.moe/mycard/ygopro2-closeup.git closeup
+        cd closeup && git sparse-checkout set Picture/Closeup && cd ..
+        
+        git clone --depth 1 --filter=blob:none --sparse https://code.moenext.com/mycard/mdpro3-sound.git sound
+        cd sound && git sparse-checkout set Sound && cd ..
+        
+        cd ..
+    
+    - name: Link external dependencies
+      run: |
+        ln -s external/platforms/Platforms Assets/StreamingAssets/
+        ln -s external/hd-arts/Picture/Art Assets/StreamingAssets/
+        ln -s external/closeup/Picture/Closeup Assets/StreamingAssets/
+        ln -s external/sound/Sound Assets/StreamingAssets/
+    
+    - name: Install Unity
+      uses: game-ci/unity-builder@v4
+      with:
+        unityVersion: 6000. 0.10f1
+    
+    - name: Build for Mac
+      uses: game-ci/unity-builder@v4
+      with: 
+        targetPlatform: StandaloneOSX
+        unityVersion: 6000.0.10f1
+        buildMethod: BuildScript. BuildMac
+    
+    - name: Upload Release
+      if: startsWith(github.ref, 'refs/tags/')
+      uses: softprops/action-gh-release@v1
+      with: 
+        files: build/StandaloneOSX/MDPro3.app/**/*

@@ -1,0 +1,27 @@
+{
+  "ActiveProfile": "Xbox",
+  "CustomMappings": {
+    "buttonSouth": "Confirm",
+    "buttonEast": "Cancel",
+    "buttonWest": "Secondary",
+    "buttonNorth": "Tertiary",
+    "leftShoulder": "PreviousTab",
+    "rightShoulder": "NextTab",
+    "leftTrigger": "ZoomOut",
+    "rightTrigger": "ZoomIn",
+    "select": "Menu",
+    "start": "Pause",
+    "leftStickPress": "ToggleView",
+    "rightStickPress": "CenterCamera",
+    "dpadUp": "NavigateUp",
+    "dpadDown": "NavigateDown",
+    "dpadLeft": "NavigateLeft",
+    "dpadRight": "NavigateRight"
+  },
+  "NavigationSettings": {
+    "DeadZone": 0.3,
+    "RepeatDelay": 0.4,
+    "RepeatRate": 0.15,
+    "AnalogSensitivity": 1.0
+  }
+}

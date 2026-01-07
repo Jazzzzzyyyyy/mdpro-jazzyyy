@@ -4,6 +4,14 @@ A new version of YGOPro in Unity with MasterDuel Assets.
 
 Unity version: 6000.0.10f1
 
+### Controller Support
+
+MDPro3 includes built-in controller support for Xbox, PlayStation, and Nintendo controllers. See [CONTROLLER_MOD_README.md](CONTROLLER_MOD_README.md) for detailed documentation on:
+- Button mappings for each controller type
+- Navigation in menus, deck builder, and duels
+- Custom configuration options
+- Troubleshooting tips
+
 ### Other required folders
 
 * Platforms: https://code.mycard.moe/sherry_chaos/mdpro3-assetbundles

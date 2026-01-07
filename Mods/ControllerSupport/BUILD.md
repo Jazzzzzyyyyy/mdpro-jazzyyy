@@ -7,6 +7,14 @@ This guide explains how to build the Controller Support mod as a DLL for MDPro3.
 - [.NET SDK 6.0+](https://dotnet.microsoft.com/download) or Visual Studio 2022
 - MDPro3 game installation (for reference assemblies)
 
+## Setup
+
+Before building, rename the project file:
+```bash
+# Rename to proper extension (Git ignores .csproj files)
+mv ControllerSupport.csproj.txt ControllerSupport.csproj
+```
+
 ## Build Steps
 
 ### Option 1: Using .NET CLI (Recommended)

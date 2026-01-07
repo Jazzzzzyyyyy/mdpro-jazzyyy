@@ -27,80 +27,61 @@ jobs:
       uses: actions/cache@v3
       with:
         path: external
-        key: mdpro3-deps-${{ hashFiles('. github/workflows/build-mac-release.yml') }}
+        key: mdpro3-deps-${{ hashFiles('.github/workflows/main.yml') }}
         restore-keys: mdpro3-deps-
 
-    - name:  Fetch external dependencies (with retry)
+    - name: Fetch external dependencies (with retry)
       if: steps.cache-deps.outputs.cache-hit != 'true'
       run: |
         mkdir -p external
         cd external
 
-        echo "📥 Fetching Platforms..."
-        for attempt in {1..3}; do
-          echo "Attempt $attempt/3..."
-          if git clone --depth 1 https://code.moenext.com/sherry_chaos/mdpro3-assetbundles.git platforms 2>/dev/null; then
-            echo "✓ Platforms cloned successfully"
-            break
-          elif [ $attempt -lt 3 ]; then
-            echo "⚠️ Attempt $attempt failed, retrying in 30s..."
-            rm -rf platforms
-            sleep 30
-          else
-            echo "❌ Failed to clone Platforms after 3 attempts"
-            exit 1
-          fi
-        done
+        # Function to clone with retries and proper error handling
+        clone_with_retry() {
+          local name=$1
+          local url=$2
+          local target=$3
+          
+          echo "📥 Fetching $name..."
+          for attempt in {1..3}; do
+            echo "Attempt $attempt/3..."
+            
+            # Configure git for better network handling
+            git config --global http.postBuffer 524288000
+            git config --global http.lowSpeedLimit 1000
+            git config --global http.lowSpeedTime 60
+            
+            if timeout 600 git clone --depth 1 --single-branch --no-tags "$url" "$target"; then
+              echo "✓ $name cloned successfully"
+              
+              # Verify the clone
+              if [ -d "$target/.git" ]; then
+                echo "✓ $name integrity verified"
+                return 0
+              else
+                echo "⚠️ $name clone incomplete, retrying..."
+                rm -rf "$target"
+              fi
+            fi
+            
+            if [ $attempt -lt 3 ]; then
+              echo "⚠️ Attempt $attempt failed, retrying in $((attempt * 15))s..."
+              rm -rf "$target"
+              sleep $((attempt * 15))
+            else
+              echo "❌ Failed to clone $name after 3 attempts"
+              return 1
+            fi
+          done
+        }
 
-        echo "📥 Fetching HD-Arts..."
-        for attempt in {1..3}; do
-          echo "Attempt $attempt/3..."
-          if git clone --depth 1 https://code.mycard.moe/mycard/hd-arts.git hd-arts 2>/dev/null; then
-            echo "✓ HD-Arts cloned successfully"
-            break
-          elif [ $attempt -lt 3 ]; then
-            echo "⚠️ Attempt $attempt failed, retrying in 30s..."
-            rm -rf hd-arts
-            sleep 30
-          else
-            echo "❌ Failed to clone HD-Arts after 3 attempts"
-            exit 1
-          fi
-        done
+        # Clone all dependencies
+        clone_with_retry "Platforms" "https://code.moenext.com/sherry_chaos/mdpro3-assetbundles.git" "platforms" || exit 1
+        clone_with_retry "HD-Arts" "https://code.mycard.moe/mycard/hd-arts.git" "hd-arts" || exit 1
+        clone_with_retry "Closeup" "https://code.mycard.moe/mycard/ygopro2-closeup.git" "closeup" || exit 1
+        clone_with_retry "Sound" "https://code.moenext.com/mycard/mdpro3-sound.git" "sound" || exit 1
 
-        echo "📥 Fetching Closeup..."
-        for attempt in {1.. 3}; do
-          echo "Attempt $attempt/3..."
-          if git clone --depth 1 https://code.mycard.moe/mycard/ygopro2-closeup.git closeup 2>/dev/null; then
-            echo "✓ Closeup cloned successfully"
-            break
-          elif [ $attempt -lt 3 ]; then
-            echo "⚠️ Attempt $attempt failed, retrying in 30s..."
-            rm -rf closeup
-            sleep 30
-          else
-            echo "❌ Failed to clone Closeup after 3 attempts"
-            exit 1
-          fi
-        done
-
-        echo "📥 Fetching Sound..."
-        for attempt in {1..3}; do
-          echo "Attempt $attempt/3..."
-          if git clone --depth 1 https://code.moenext.com/mycard/mdpro3-sound.git sound 2>/dev/null; then
-            echo "✓ Sound cloned successfully"
-            break
-          elif [ $attempt -lt 3 ]; then
-            echo "⚠️ Attempt $attempt failed, retrying in 30s..."
-            rm -rf sound
-            sleep 30
-          else
-            echo "❌ Failed to clone Sound after 3 attempts"
-            exit 1
-          fi
-        done
-
-        cd .. 
+        cd ..
         echo "✓ All dependencies fetched"
 
     - name: Link external dependencies
@@ -122,37 +103,111 @@ jobs:
         echo "✓ External assets linked"
         ls -la Assets/StreamingAssets/
 
-    - name: Install Unity (via Unity Hub)
+    - name: Install Unity Hub
       run: |
-        # Download Unity version 6000.0.10f1
-        echo "Installing Unity 6000.0.10f1..."
-        sudo mkdir -p /Applications/Unity/Hub/Editors
+        echo "Installing Unity Hub..."
+        # Download Unity Hub
+        curl -L -o UnityHub.dmg "https://public-cdn.cloud.unity3d.com/hub/prod/UnityHubSetup.dmg"
         
-        # Alternative: Use pre-built action
-        echo "Using GameCI Unity Builder"
+        # Mount and install Unity Hub
+        hdiutil attach UnityHub.dmg
+        cp -R "/Volumes/Unity Hub/Unity Hub.app" /Applications/
+        hdiutil detach "/Volumes/Unity Hub"
+        rm UnityHub.dmg
+        
+        echo "✓ Unity Hub installed"
 
-    - name: Setup GameCI/Unity Builder
-      uses: game-ci/setup-unity@v2
-      with:
-        unity-version: 6000.0.10f1
+    - name: Install Unity Editor
+      run: |
+        echo "Installing Unity 6000.0.10f1..."
+        
+        # Use Unity Hub CLI to install Unity Editor
+        UNITY_VERSION="6000.0.10f1"
+        UNITY_VERSION_CHANGESET="1c78e66e4a85"
+        
+        # Install Unity Editor via Unity Hub
+        "/Applications/Unity Hub.app/Contents/MacOS/Unity Hub" -- \
+          --headless install \
+          --version "$UNITY_VERSION" \
+          --changeset "$UNITY_VERSION_CHANGESET" \
+          --module mac-il2cpp
+        
+        # Wait for installation to complete
+        sleep 30
+        
+        # Find Unity installation path
+        UNITY_PATH="/Applications/Unity/Hub/Editor/$UNITY_VERSION/Unity.app/Contents/MacOS/Unity"
+        
+        if [ -f "$UNITY_PATH" ]; then
+          echo "✓ Unity $UNITY_VERSION installed successfully"
+          echo "UNITY_PATH=$UNITY_PATH" >> $GITHUB_ENV
+        else
+          echo "⚠️ Unity installation not found at expected path, searching..."
+          # Try alternative paths
+          UNITY_PATH=$(find /Applications/Unity -name "Unity" -type f | grep "$UNITY_VERSION" | head -n 1)
+          if [ -n "$UNITY_PATH" ]; then
+            echo "✓ Found Unity at: $UNITY_PATH"
+            echo "UNITY_PATH=$UNITY_PATH" >> $GITHUB_ENV
+          else
+            echo "❌ Unity installation failed"
+            exit 1
+          fi
+        fi
+
+    - name: Activate Unity License
+      run: |
+        echo "Activating Unity license..."
+        # Note: For CI/CD, you need to set up Unity license as secrets
+        # UNITY_LICENSE, UNITY_EMAIL, UNITY_PASSWORD should be configured
+        
+        if [ -n "${{ secrets.UNITY_LICENSE }}" ]; then
+          # Activate using license file
+          echo "${{ secrets.UNITY_LICENSE }}" | base64 --decode > unity.ulf
+          "$UNITY_PATH" -quit -batchmode -nographics -logFile - \
+            -manualLicenseFile unity.ulf
+          rm unity.ulf
+        elif [ -n "${{ secrets.UNITY_EMAIL }}" ] && [ -n "${{ secrets.UNITY_PASSWORD }}" ]; then
+          # Activate using credentials
+          "$UNITY_PATH" -quit -batchmode -nographics -logFile - \
+            -username "${{ secrets.UNITY_EMAIL }}" \
+            -password "${{ secrets.UNITY_PASSWORD }}"
+        else
+          echo "⚠️ No Unity license configured. Build may fail."
+          echo "Please set UNITY_LICENSE, UNITY_EMAIL, and UNITY_PASSWORD secrets."
+        fi
 
     - name: Build for Mac
-      uses: game-ci/unity-builder@v4
-      env:
-        UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
-        UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
-        UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
-      with:
-        targetPlatform: StandaloneOSX
-        unityVersion: 6000.0.10f1
-        buildMethod: BuildScript. BuildMac
-        buildName: MDPro3
-        versioning: Semantic
-        allowDirtyBuild: true
+      run: |
+        echo "Building macOS application..."
+        
+        # Create build directory
+        mkdir -p build/StandaloneOSX
+        
+        # Run Unity build
+        "$UNITY_PATH" -quit -batchmode -nographics \
+          -projectPath "$GITHUB_WORKSPACE" \
+          -buildTarget StandaloneOSX \
+          -buildOSXUniversalPlayer "build/StandaloneOSX/MDPro3.app" \
+          -logFile build.log \
+          -executeMethod BuildScript.BuildMac \
+          || (cat build.log && exit 1)
+        
+        # Show build log
+        echo "Build completed. Log:"
+        tail -n 100 build.log
+        
+        # Verify build
+        if [ -d "build/StandaloneOSX/MDPro3.app" ]; then
+          echo "✓ Build successful"
+          ls -lah build/StandaloneOSX/
+        else
+          echo "❌ Build failed - app not found"
+          exit 1
+        fi
 
     - name: Upload Build Artifacts
       if: always()
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: MDPro3-Mac-Build
         path: build/StandaloneOSX/

@@ -31,19 +31,35 @@ A comprehensive controller support system for MDPro3, enabling full gamepad navi
 
 ## 🔧 Installation
 
-### For Players (Pre-built)
+### For Players (Pre-built Game)
 
-1. Download the latest release from the Releases page
-2. Copy the `ControllerSupport` folder to `MDPro3/Assets/Scripts/MDPro3/`
-3. Copy `Controller` folder to `MDPro3/Data/`
-4. Launch MDPro3 - controller support will be automatically enabled
+Controller support is **built into MDPro3** when compiled from source. If you're using a pre-built version of MDPro3 that includes this feature:
 
-### For Developers
+1. Simply connect your controller before or after launching MDPro3
+2. The game will automatically detect your controller
+3. (Optional) Copy the `Controller` folder to your `MDPro3/Data/` folder if you want to customize button mappings
 
-1. Clone or copy the source files to your MDPro3 project
-2. Ensure the Unity Input System package is installed
-3. Add `ControllerManager` to a persistent GameObject in your scene
-4. The system will automatically initialize on startup
+**Note**: The C# source code files (`Assets/Scripts/MDPro3/ControllerSupport/*.cs`) are part of the Unity project and are compiled into the game executable. End users do not need to install these files - they are only needed if you're building MDPro3 from source.
+
+### For Developers (Building from Source)
+
+If you're building MDPro3 from the Unity project source:
+
+1. The controller support scripts are located in `Assets/Scripts/MDPro3/ControllerSupport/`
+2. Ensure the Unity Input System package is installed (already included in the project)
+3. The system integrates with the existing `UserInput` system and initializes automatically
+4. Build the project normally - the controller support will be included in the compiled game
+
+### Configuration Files Only
+
+If you just want to customize controller mappings on an existing installation:
+
+1. Create a `Controller` folder inside your `MDPro3/Data/` directory
+2. Copy the JSON configuration files:
+   - `controller_config.json` - Main configuration
+   - `xbox_profile.json` - Xbox button labels reference
+   - `playstation_profile.json` - PlayStation button labels reference
+3. Edit `controller_config.json` to customize your button mappings
 
 ## 🎮 Supported Controllers
 
@@ -227,13 +243,19 @@ MDPro3/Data/Controller/controller_config.json
 
 ### Architecture
 
-The controller support system consists of the following components:
+The controller support system is integrated into MDPro3's Unity project source code. The C# scripts are located in `Assets/Scripts/MDPro3/ControllerSupport/` and are compiled into the game executable when MDPro3 is built.
 
-1. **ControllerConfig**: JSON-based configuration handling
-2. **ControllerManager**: Central input processing and event dispatching
-3. **ControllerMenuNavigation**: Menu navigation support with visual feedback
-4. **ControllerDuelSupport**: Duel-specific navigation and actions
-5. **ControllerDeckBuilderSupport**: Deck builder navigation and operations
+**Source Code Components** (for developers):
+1. **ControllerConfig.cs**: JSON-based configuration handling
+2. **ControllerManager.cs**: Central input processing and event dispatching
+3. **ControllerMenuNavigation.cs**: Menu navigation support with visual feedback
+4. **ControllerDuelSupport.cs**: Duel-specific navigation and actions
+5. **ControllerDeckBuilderSupport.cs**: Deck builder navigation and operations
+
+**Runtime Files** (for end users):
+- `Data/Controller/controller_config.json`: User configuration file
+- `Data/Controller/xbox_profile.json`: Xbox button reference
+- `Data/Controller/playstation_profile.json`: PlayStation button reference
 
 ### Integration Points
 

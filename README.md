@@ -4,6 +4,42 @@ A new version of YGOPro in Unity with MasterDuel Assets.
 
 Unity version: 6000.0.10f1
 
+### Building for macOS
+
+MDPro3 includes an automated build script that handles dependency fetching and Unity building.
+
+**Quick Start:**
+```bash
+# Run the build script
+./build-macos.sh
+```
+
+**Options:**
+- `--force` - Force re-download of all dependencies (useful if downloads were incomplete)
+- `--skip-deps` - Skip dependency fetching (if you've already downloaded them)
+- `--skip-build` - Only fetch dependencies without building
+- `--unity-path PATH` - Specify Unity executable path if not in default location
+
+**Examples:**
+```bash
+# Force re-download dependencies
+./build-macos.sh --force
+
+# Only fetch dependencies
+./build-macos.sh --skip-build
+
+# Use specific Unity version
+./build-macos.sh --unity-path /Applications/Unity/Hub/Editor/6000.0.10f1/Unity.app/Contents/MacOS/Unity
+```
+
+The script will:
+1. Automatically fetch external dependencies (Platforms, HD-Arts, Closeup, Sound)
+2. Create proper symlinks in `Assets/StreamingAssets`
+3. Build the macOS application using Unity
+4. Output the build to `build/StandaloneOSX/MDPro3.app`
+
+**Note:** External dependencies are cached in the `external/` directory to avoid re-downloading on subsequent builds.
+
 ### Other required folders
 
 * Platforms: https://code.mycard.moe/sherry_chaos/mdpro3-assetbundles

@@ -12,7 +12,7 @@ A comprehensive controller support system for MDPro3, enabling full gamepad navi
 - [Usage Guide](#usage-guide)
 - [Configuration](#configuration)
 - [Troubleshooting](#troubleshooting)
-- [Technical Details](#technical-details)
+- [Building from Source](#building-from-source)
 
 ## ✨ Features
 
@@ -25,41 +25,47 @@ A comprehensive controller support system for MDPro3, enabling full gamepad navi
 
 ## 📦 Requirements
 
-- MDPro3 (Unity 6000.0.10f1+)
-- Unity Input System package (included in MDPro3)
+- MDPro3 game installation
 - Supported gamepad controller
 
 ## 🔧 Installation
 
-### For Players (Pre-built Game)
+### Quick Install (Recommended)
 
-Controller support is **built into MDPro3** when compiled from source. If you're using a pre-built version of MDPro3 that includes this feature:
+1. **Download** the latest release:
+   - `ControllerSupport.dll`
+   - `Controller/` folder (config files)
 
-1. Simply connect your controller before or after launching MDPro3
-2. The game will automatically detect your controller
-3. (Optional) Copy the `Controller` folder to your `MDPro3/Data/` folder if you want to customize button mappings
+2. **Install the DLL**: Copy `ControllerSupport.dll` to:
+   ```
+   MDPro3/MDPro3_Data/Managed/ControllerSupport.dll
+   ```
 
-**Note**: The C# source code files (`Assets/Scripts/MDPro3/ControllerSupport/*.cs`) are part of the Unity project and are compiled into the game executable. End users do not need to install these files - they are only needed if you're building MDPro3 from source.
+3. **Install Config Files**: Copy the `Controller` folder to:
+   ```
+   MDPro3/Data/Controller/
+   ```
 
-### For Developers (Building from Source)
+4. **Launch MDPro3** and connect your controller!
 
-If you're building MDPro3 from the Unity project source:
+### Detailed Installation
 
-1. The controller support scripts are located in `Assets/Scripts/MDPro3/ControllerSupport/`
-2. Ensure the Unity Input System package is installed (already included in the project)
-3. The system integrates with the existing `UserInput` system and initializes automatically
-4. Build the project normally - the controller support will be included in the compiled game
+For step-by-step instructions, see [Mods/ControllerSupport/INSTALL.md](Mods/ControllerSupport/INSTALL.md).
 
-### Configuration Files Only
+### Folder Structure After Installation
 
-If you just want to customize controller mappings on an existing installation:
-
-1. Create a `Controller` folder inside your `MDPro3/Data/` directory
-2. Copy the JSON configuration files:
-   - `controller_config.json` - Main configuration
-   - `xbox_profile.json` - Xbox button labels reference
-   - `playstation_profile.json` - PlayStation button labels reference
-3. Edit `controller_config.json` to customize your button mappings
+```
+MDPro3/
+├── MDPro3.exe
+├── MDPro3_Data/
+│   └── Managed/
+│       └── ControllerSupport.dll  ← Mod DLL
+└── Data/
+    └── Controller/
+        ├── controller_config.json  ← Your settings
+        ├── xbox_profile.json
+        └── playstation_profile.json
+```
 
 ## 🎮 Supported Controllers
 
@@ -239,13 +245,42 @@ MDPro3/Data/Controller/controller_config.json
 2. Check file permissions on the configuration file
 3. Verify JSON syntax is correct
 
-## 🛠️ Technical Details
+## 🛠️ Building from Source
+
+If you want to build the DLL yourself or modify the source code:
+
+### Source Files Location
+
+The mod source code is in `Mods/ControllerSupport/`:
+```
+Mods/ControllerSupport/
+├── ControllerSupport.csproj    ← Build project
+├── BUILD.md                    ← Build instructions
+├── INSTALL.md                  ← Installation guide
+├── src/                        ← C# source files
+│   ├── ControllerConfig.cs
+│   ├── ControllerManager.cs
+│   ├── ControllerMenuNavigation.cs
+│   ├── ControllerDuelSupport.cs
+│   └── ControllerDeckBuilderSupport.cs
+└── Controller/                 ← Config templates
+    ├── controller_config.json
+    ├── xbox_profile.json
+    └── playstation_profile.json
+```
+
+### Building the DLL
+
+1. Install [.NET SDK 6.0+](https://dotnet.microsoft.com/download)
+2. Set `GamePath` to your MDPro3 installation folder
+3. Run: `dotnet build -c Release`
+4. Find `ControllerSupport.dll` in `bin/Release/netstandard2.1/`
+
+For detailed build instructions, see [Mods/ControllerSupport/BUILD.md](Mods/ControllerSupport/BUILD.md).
 
 ### Architecture
 
-The controller support system is integrated into MDPro3's Unity project source code. The C# scripts are located in `Assets/Scripts/MDPro3/ControllerSupport/` and are compiled into the game executable when MDPro3 is built.
-
-**Source Code Components** (for developers):
+**Source Code Components**:
 1. **ControllerConfig.cs**: JSON-based configuration handling
 2. **ControllerManager.cs**: Central input processing and event dispatching
 3. **ControllerMenuNavigation.cs**: Menu navigation support with visual feedback
